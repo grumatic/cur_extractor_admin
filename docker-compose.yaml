@@ -1,0 +1,7 @@
+version: '3'
+services:
+    mongo:
+        image: 'mongo:5.0.5'
+        container_name: cur_mongo
+        ports:
+            - '27017:27017'
