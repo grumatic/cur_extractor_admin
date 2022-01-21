@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +81,7 @@ DATABASES = {
            'NAME': 'cur_db',
             # 'CLIENT': {
             #     'host': 'mongodb+srv://127.0.0.1:27017'
-            # } 
+            # }
     }
 }
 
