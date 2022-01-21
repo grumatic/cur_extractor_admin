@@ -75,8 +75,11 @@ WSGI_APPLICATION = 'cur_extractor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+           'ENGINE': 'djongo',
+           'NAME': 'cur_db',
+            # 'CLIENT': {
+            #     'host': 'mongodb+srv://127.0.0.1:27017'
+            # } 
     }
 }
 
