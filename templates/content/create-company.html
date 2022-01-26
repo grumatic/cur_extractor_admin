@@ -1,0 +1,14 @@
+{% extends 'layout/base2.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class="content">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Create">
+    </form>
+</div>
+{% endblock %}

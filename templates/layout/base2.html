@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <meta name="description" content="Dashboard to handle CUR reports accounts and credentials" />
+    <meta name="author" content="Jose Simoes | Grumatic" />
+    
+    <title>
+        CUR Extractor tool | Grumatic
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+        rel="stylesheet" />
+    <!-- Latest compiled and minified JavaScript -->
+    <link href="{% static '/assets/css/styles.css' %}"
+        rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Fontawesome -->
+    <link href="{% static 'assets/css/icons/font-awesome/css/fontawesome.min.css' %}"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <!-- Latest compiled and minified CSS -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" 
+        rel="stylesheet"> -->
+    <!-- Optional theme -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
+        rel="stylesheet"> -->
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
+
+
+
+    <!-- Specific Page CSS goes HERE  -->
+    {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body>
+    <div class="side-menu">
+        <div class="name">
+            <h1>CUR Extractor</h1>
+        </div>
+        <ul>
+            <li>
+                <i class="fas fa-user-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_account' %}">Accounts</a>
+            </li>
+            <li>
+                <i class="fas fa-table"></i> &nbsp; &nbsp; <a href="{% url 'view_company' %}">Companies</a>
+            </li>
+            <li>
+                <i class="fab fa-keycdn"></i> &nbsp; &nbsp; <a href="{% url 'view_credential' %}">Credentials</a>
+            </li>
+            <li>
+                <i class="fas fa-warehouse"></i> &nbsp; &nbsp; <a href="{% url 'view_storage-info' %}">Storage Infos</a>
+            </li>
+            <li>
+                <i class="fas fa-info-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_report-info' %}">Report Infos</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="nav">
+                <div class="directs">
+                    <a href="{% url 'create_account' %}">New Account</a>
+                    <a href="{% url 'create_credential' %}">New Credential</a>
+                    <a href="{% url 'create_company' %}">New Company</a>
+                    <a href="{% url 'create_report-info' %}">New Report Info</a>
+                    <a href="{% url 'create_storage-info' %}">New Storage Info</a>
+                </div>
+                
+
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+
+    </div>
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}{% endblock javascripts %}
+        
+</body>
+</html>

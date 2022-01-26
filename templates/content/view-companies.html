@@ -1,0 +1,42 @@
+{% extends 'layout/base2.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class="content">
+    <div class="listing-table"></div>
+        <div class="tittle">
+                <h2>Existing Companies</h2>
+        </div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Accounts</th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+
+            {% for company in companies %}
+
+            <tr>
+                <td>{{company.id}}</td>
+                <td>{{company.name}}</td>
+                <td>
+
+                    {% for account in company.accounts %}
+                    <li>
+                        <ul><a href="{% url 'view_account' account.account_id %}">{{account.account_id}}</a></ul>
+                    </li>
+                    {% endfor %}
+                </td>
+                <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                <td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

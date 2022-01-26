@@ -1,0 +1,35 @@
+{% extends 'layout/base2.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class="content">
+    <div class="listing-table"></div>
+        <div class="tittle">
+                <h2>Existing Storage Infos</h2>
+        </div>
+        <table>
+            <tr>
+                <th>Account ID</th>
+                <th>Report Info ID</th>
+                <th>Bucket Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+
+            {% for storage_info in storage_infos %}
+
+            <tr>
+                <td>{{storage_info.account_id.account_id}}</td>
+                <td>{{storage_info.report_info_id.id}}</td>
+                <td>{{storage_info.bucket_name}}</td>
+                <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                <td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

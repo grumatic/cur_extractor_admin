@@ -1,6 +1,5 @@
 from django.db import models
 
-
 from accounts.utils import accept_exactly_one
 
 class Company(models.Model):
@@ -9,12 +8,16 @@ class Company(models.Model):
     class Meta:
         db_table = "company"
 
+    @property
+    def accounts(self):
+        return list(Account.objects.filter(company_id=self.id))
+
+
 class Account(models.Model):
     account_id = models.IntegerField(primary_key=True)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     class Meta:
         db_table = "account"
-
 
 
 class ReportInfo(models.Model):
@@ -32,7 +35,7 @@ class ReportInfo(models.Model):
             used_report.in_use = False
             used_report.save()
 
-        super(Credential, self).save(*args, **kwargs)
+        super(ReportInfo, self).save(*args, **kwargs)
 
 class Credential(models.Model):
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
@@ -63,24 +66,3 @@ class StorageInfo(models.Model):
                                 report_info_id=self.report_info_id):
             raise ValueError("Must set exactly one, account_id or report_info_id")
         super(StorageInfo, self).save(*args, **kwargs)
-
-
-"""
-    From:
-        Raw Data (CUR csv):
-        Bucket
-        Object
-        AccessKey
-        SecretKey
-
-
-    To:
-        Curated Data (Filtered CUR csv):
-        Bucket
-        Object
-        AccessKey
-        SecretKey
-
-    Report:
-        BucketName
-"""

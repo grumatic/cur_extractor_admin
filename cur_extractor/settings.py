@@ -56,7 +56,7 @@ ROOT_URLCONF = 'cur_extractor.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [Path.joinpath(Path(BASE_DIR), "templates/")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +67,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    Path.joinpath(Path(BASE_DIR), "static/"),
 ]
 
 WSGI_APPLICATION = 'cur_extractor.wsgi.application'
