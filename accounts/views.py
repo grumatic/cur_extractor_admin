@@ -20,7 +20,7 @@ from accounts.models import (Account,
 def index(request):
     # template = loader.get_template('template/admin/base.html')
 
-    return HttpResponse(render(request, 'layout/base2.html', None))
+    return HttpResponse(render(request, 'layout/base.html', None))
 
 def dashboard_view(request):
     # template = loader.get_template('template/admin/base.html')
