@@ -14,12 +14,14 @@ class Company(models.Model):
 
 
 class Account(models.Model):
-    account_id = models.IntegerField(primary_key=True)
+    account_id = models.BigIntegerField(primary_key=True)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     class Meta:
         db_table = "account"
 
-
+    @classmethod
+    def get_by_id(cls, account_id):
+        return cls.objects.get(account_id=account_id)
 class ReportInfo(models.Model):
     name = models.CharField(max_length=32)
     prefix = models.CharField(max_length=128)
@@ -37,6 +39,10 @@ class ReportInfo(models.Model):
 
         super(ReportInfo, self).save(*args, **kwargs)
 
+    @classmethod
+    def get_current_info(cls):
+        return cls.objects.get(in_use__in=[True])
+
 class Credential(models.Model):
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
     report_info_id = models.ForeignKey(ReportInfo, on_delete=models.CASCADE, blank=True, null=True)
@@ -52,6 +58,9 @@ class Credential(models.Model):
             raise ValueError("Must set exactly one, account_id or report_info_id")
         return super(Credential, self).save(*args, **kwargs)
 
+    @classmethod
+    def get_by_account_id(cls, account_id):
+        return cls.objects.filter(account_id=account_id)
 
 class StorageInfo(models.Model):
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
@@ -66,3 +75,7 @@ class StorageInfo(models.Model):
                                 report_info_id=self.report_info_id):
             raise ValueError("Must set exactly one, account_id or report_info_id")
         super(StorageInfo, self).save(*args, **kwargs)
+
+    @classmethod
+    def get_by_account_id(cls, account_id):
+        return cls.objects.filter(account_id=account_id)

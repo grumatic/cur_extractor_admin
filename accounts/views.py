@@ -16,6 +16,7 @@ from accounts.models import (Account,
                             StorageInfo
                             )
 
+from cur import tasks
 
 def index(request):
     # template = loader.get_template('template/admin/base.html')
@@ -138,3 +139,8 @@ def create_storage_info(request):
 
     context = {'form': form}
     return render(request, 'content/create-company.html', context)
+
+def cur_hardcoded(request):
+
+    tasks.run()
+    return redirect(request.META['HTTP_REFERER'])

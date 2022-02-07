@@ -78,7 +78,12 @@
                     <a href="{% url 'create_report-info' %}">New Report Info</a>
                     <a href="{% url 'create_storage-info' %}">New Storage Info</a>
                 </div>
-                
+                <!-- 
+                    Manual Testing the extraction 
+                -->
+                <div class="user">
+                    <button name="button" type="submit" onclick="location.href='{% url "cur_hardcoded" %}'"> Send</button>
+                </div>
             </div>
         </div>
         {% block content %}

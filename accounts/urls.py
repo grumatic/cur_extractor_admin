@@ -26,4 +26,7 @@ urlpatterns = [
     path('create-report-info/', views.create_report_info, name='create_report-info'),
     path('create-storage-info/', views.create_storage_info, name='create_storage-info'),
 
+    # # CUR
+    path('cur/start_hardcoded/', views.cur_hardcoded, name="cur_hardcoded")
+
 ]
