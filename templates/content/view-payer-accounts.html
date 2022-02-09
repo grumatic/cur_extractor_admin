@@ -7,29 +7,28 @@
 <div class="content">
     <div class="listing-table"></div>
         <div class="tittle">
-                <h2>Existing Accounts</h2>
+                <h2>Existing Companies</h2>
         </div>
         <table>
             <tr>
-                <th>Account ID</th>
-                <th>Company ID</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Linked Accounts</th>
                 <th></th>
                 <th></th>
             </tr>
             
 
-            {% for account in accounts %}
+            {% for payer_account in payer_accounts %}
 
             <tr>
-                <td>{{account.account_id}}</td>
-                <td>
-                    <a href="{% url 'view_company' %}">{{account.company.id}}</a>
-                </td>
+                <td>{{payer_account.id}}</td>
+                <td>{{payer_account.name}}</td>
                 <td>
 
-                    {% for account in company.accounts %}
+                    {% for linked_account in payer_account.accounts %}
                     <li>
-                        <ul><a href="{% url 'view_account' %}">{{account.account_id}}</a></ul>
+                        <ul><a href="{% url 'view_account' account.account_id %}">{{linked_account.account_id}}</a></ul>
                     </li>
                     {% endfor %}
                 </td>

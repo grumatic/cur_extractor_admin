@@ -1,19 +1,18 @@
+from pprint import pprint
+
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 
 from accounts.forms import (AccountForm,
-                            CredentialForm,
                             CompanyForm,
                             ReportInfoForm,
-                            StorageInfoForm
-
+                            ReportInfo_Form,
+                            StorageInfoForm,
                             )
-from accounts.models import (Account,
-                            Company,
-                            Credential,
+from accounts.models import (LinkedAccount,
+                            PayerAccount,
                             ReportInfo,
-                            StorageInfo
                             )
 
 from cur import tasks
@@ -28,32 +27,24 @@ def dashboard_view(request):
 
     return HttpResponse(render(request, 'content/dashboard.html', None))
 
-def account_view(request, account_id: int= None):
-    query = {'account_id': account_id} if account_id else {}
-    accounts = Account.objects.filter(**query)
+def linked_account_view(request, linked_account_id: int= None):
+    query = {'linked_account_id': linked_account_id} if linked_account_id else {}
+    linked_accounts = LinkedAccount.objects.filter(**query)
 
     context = {
-        'accounts': accounts
+        'linked_accounts': linked_accounts
         }
-    return HttpResponse(render(request, 'content/view-accounts.html', context))
+    return HttpResponse(render(request, 'content/view-linked-accounts.html', context))
 
-def company_view(request, company_id: int=None):
-    query = {'id': company_id} if company_id else {}
-    comps = Company.objects.filter(**query)
+def company_view(request, payer_id: int=None):
+    query = {'id': payer_id} if payer_id else {}
+    comps = PayerAccount.objects.filter(**query)
 
     context = {
         'companies': comps
         }
-    return HttpResponse(render(request, 'content/view-companies.html', context))
+    return HttpResponse(render(request, 'content/view-payer-accounts.html', context))
 
-def credential_view(request, credential_id: int=None):
-    query = {'id': credential_id} if credential_id else {}
-    credentials = Credential.objects.filter(**query)
-
-    context = {
-        'credentials': credentials
-        }
-    return HttpResponse(render(request, 'content/view-credentials.html', context))
 
 def report_info_view(request, report_info_id: int=None):
     query = {'id': report_info_id} if report_info_id else {}
@@ -69,13 +60,9 @@ def storage_info_view(request, storage_info_id: int=None):
     storage_infos = StorageInfo.objects.filter(**query)
 
     context = {
-        'storage_infos': storage_infos
+        'report_infos': storage_infos
         }
     return HttpResponse(render(request, 'content/view-storage-infos.html', context))
-
-
-
-
 
 
 
@@ -93,19 +80,10 @@ def create_account(request):
             print(form.errors)
         return redirect('/dashboard')
 
-    context = {'form': form}
-    return render(request, 'content/create-company.html', context)
-
-def create_credential(request):
-    form = CredentialForm()
-    if request.method == 'POST':
-        form = CredentialForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('/dashboard')
-
-    context = {'form': form}
-    return render(request, 'content/create-company.html', context)
+    context = {
+        'form': form.as_ul()
+        }
+    return render(request, 'content/create-payer-account.html', context)
 
 def create_company(request):
     form = CompanyForm()
@@ -113,21 +91,26 @@ def create_company(request):
         form = CompanyForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('/dashboard')
+        return redirect('/create-payer-account.html')
 
-    context = {'form': form}
-    return render(request, 'content/create-company.html', context)
+    context = {
+        'form': form.as_ul()
+        }
+    return render(request, 'content/create-payer-account.html', context)
 
 def create_report_info(request):
     form = ReportInfoForm()
     if request.method == 'POST':
         form = ReportInfoForm(request.POST)
         if form.is_valid():
-            form.save()
-        return redirect('/dashboard')
+            report = form.save()
+            report.accounts.set(form.cleaned_data["accounts"])
+        return redirect('/create-report-info')
 
-    context = {'form': form}
-    return render(request, 'content/create-company.html', context)
+    context = {
+        'form': form.as_ul()
+        }
+    return render(request, 'content/create-payer-account.html', context)
 
 def create_storage_info(request):
     form = StorageInfoForm()
@@ -135,10 +118,15 @@ def create_storage_info(request):
         form = StorageInfoForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('/dashboard')
+        return redirect('/create-storage-info')
 
-    context = {'form': form}
-    return render(request, 'content/create-company.html', context)
+    context = {
+        'form': form.as_ul()
+        }
+    return render(request, 'content/create-storage-info.html', context)
+
+
+
 
 def cur_hardcoded(request):
 

@@ -1,27 +1,34 @@
 from django import forms
 
-from accounts.models import Account, ReportInfo, Company, StorageInfo, Credential
+from accounts.models import LinkedAccount, ReportInfo, PayerAccount, StorageInfo
 
 
 class AccountForm(forms.ModelForm):
     class Meta:
-        model = Account
+        model = LinkedAccount
         fields = '__all__'
 
-class CredentialForm(forms.ModelForm):
-    class Meta:
-        model = Credential
-        fields = '__all__'
 
 class CompanyForm(forms.ModelForm):
     class Meta:
-        model = Company
+        model = PayerAccount
         fields = '__all__'
 
 class ReportInfoForm(forms.ModelForm):
+    accounts = forms.ModelMultipleChoiceField(
+        queryset=LinkedAccount.objects.all(),
+        required=False,
+        # widget=forms.CheckboxSelectMultiple
+    )
     class Meta:
         model = ReportInfo
-        fields = '__all__'
+        fields = ('name','prefix','payer','access_key','secret_key','bucket_name')
+
+    # def save(self, *args, **kwargs):
+    #     print(self)
+    #     print(args)
+    #     print(kwargs)
+    #     super(ReportInfoForm, self).save(*args, **kwargs)
 
 class StorageInfoForm(forms.ModelForm):
     class Meta:
@@ -29,25 +36,18 @@ class StorageInfoForm(forms.ModelForm):
         fields = '__all__'
 
 
-class Account_Form(forms.Form):
-    account_id = forms.CharField(max_length=32) #TODO clean int
-    company_id = forms.ModelMultipleChoiceField(queryset=Company.objects.all())
-
-class Credential_Form(forms.Form):
-    account_id = forms.ModelMultipleChoiceField(queryset=Account.objects.all())
-    report_info_id = forms.ModelMultipleChoiceField(queryset=ReportInfo.objects.all())
-    access_key = forms.CharField(max_length=128) #TODO add min_length
-    secret_key = forms.CharField(max_length=1024)
-
-class Company_Form(forms.Form):
-    name = forms.CharField(max_length=256) #TODO clean int
-
 class ReportInfo_Form(forms.Form):
     name = forms.CharField(max_length=32)
     prefix = forms.CharField(max_length=128)
-    in_use = forms.BooleanField()
+    # payer_id = models.ForeignKey(PayerAccount, on_delete=models.CASCADE)
+    # account_ids = models.ManyToManyField(
+    #                         LinkedAccount,
+    #                         # related_name="account",
+    #                         # null=True,
+    #                         blank=True)
 
-class StorageInfo_Form(forms.Form):
-    account_id = forms.ModelMultipleChoiceField(queryset=Account.objects.all())
-    report_info_id = forms.ModelMultipleChoiceField(queryset=ReportInfo.objects.all())
+    color = forms.ModelChoiceField(queryset=PayerAccount.objects.all())
+    speed = forms.ModelChoiceField(queryset=LinkedAccount.objects.all())
+    access_key = forms.CharField(max_length=128) #TODO add min_length
+    secret_key = forms.CharField(max_length=1024)
     bucket_name = forms.CharField(max_length=63) #TODO add min_length

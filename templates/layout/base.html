@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <meta name="description" content="Dashboard to handle CUR reports accounts and credentials" />
+    <meta name="description" content="Dashboard to handle CUR reports accounts" />
     <meta name="author" content="Jose Simoes | Grumatic" />
     
     <title>
@@ -52,16 +52,10 @@
         </div>
         <ul>
             <li>
-                <i class="fas fa-user-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_account' %}">Accounts</a>
+                <i class="fas fa-user-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_account' %}">Linked</a>
             </li>
             <li>
                 <i class="fas fa-table"></i> &nbsp; &nbsp; <a href="{% url 'view_company' %}">Companies</a>
-            </li>
-            <li>
-                <i class="fab fa-keycdn"></i> &nbsp; &nbsp; <a href="{% url 'view_credential' %}">Credentials</a>
-            </li>
-            <li>
-                <i class="fas fa-warehouse"></i> &nbsp; &nbsp; <a href="{% url 'view_storage-info' %}">Storage Infos</a>
             </li>
             <li>
                 <i class="fas fa-info-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_report-info' %}">Report Infos</a>
@@ -72,9 +66,8 @@
         <div class="header">
             <div class="nav">
                 <div class="directs">
-                    <a href="{% url 'create_account' %}">New Account</a>
-                    <a href="{% url 'create_credential' %}">New Credential</a>
-                    <a href="{% url 'create_company' %}">New Company</a>
+                    <a href="{% url 'create_account' %}">New LinkedAccount</a>
+                    <a href="{% url 'create_company' %}">New PayerAccount</a>
                     <a href="{% url 'create_report-info' %}">New Report Info</a>
                     <a href="{% url 'create_storage-info' %}">New Storage Info</a>
                 </div>

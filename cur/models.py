@@ -1,17 +1,17 @@
 from django.db import models
 
-from accounts.models import Account
+from accounts.models import StorageInfo
 
 
 
 class CURReport(models.Model):
-    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    storage_info = models.ForeignKey(StorageInfo, on_delete=models.CASCADE)
     manifest_key = models.CharField(primary_key=True, max_length=1024)
     last_updated = models.DateTimeField()
 
     class Meta:
         db_table = 'cur_report'
-        unique_together = ('account_id', 'manifest_key',)
+        unique_together = ('storage_info', 'manifest_key',)
 
     @classmethod
     def get_by_account_and_key(cls, account_id, manifest_key):
@@ -23,5 +23,3 @@ class CURReport(models.Model):
     @classmethod
     def filter_by_account(cls, account_id):
         return cls.objects.filter(account_id=account_id)
-
-    

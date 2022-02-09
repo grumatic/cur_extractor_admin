@@ -15,11 +15,10 @@ logger = logging.getLogger(__name__)
 
 class S3HandlerClass(object):
 
-    def __init__(self, access_key, secret_key, account_id, bucket_name= None):
+    def __init__(self, access_key, secret_key, storage_id, bucket_name= None):
         self.access_key = access_key
         self.secret_key = secret_key
-        self.account_id = account_id
-        print(self.account_id)
+        self.storage_id = storage_id
         self.bucket_name = bucket_name
 
         try:
@@ -38,13 +37,17 @@ class S3HandlerClass(object):
                                                 Key=key)["Body"].read())
 
 
+    def get_objects_list(self, prefix=""):
+        return self.s3.list_objects_v2(Bucket=self.bucket_name,
+                                        Prefix= prefix)
+
     def download_single_CUR_data(self, report_key, file_name):
         """
         Download CUR data from S3
         """
         # Create folder to download CUR data
-        download_folder_path = self.get_download_path(self.account_id)
-        self.make_download_temp_dir(self.account_id)
+        download_folder_path = self.get_download_path(self.storage_id)
+        self.make_download_temp_dir(self.storage_id)
 
         download_file_path = os.path.join(download_folder_path, file_name)
 
@@ -63,7 +66,7 @@ class S3HandlerClass(object):
         """
         # Create folder to download CUR data
         download_folder_path = self.get_download_path(self.account_id)
-        self.make_download_temp_dir(self.account_id)
+        self.make_download_temp_dir(self.storage_id)
 
         download_obj_list = []
         # Get objects list
@@ -109,8 +112,6 @@ class S3HandlerClass(object):
             object_key = file_path[file_path.rfind('/')+1:]
             object_key = object_key.replace('&&', '/')
 
-            print(object_key)
-            print(file_path)
             self.s3.upload_file(file_path, bucket_name, object_key)
 
         except Exception as e:
