@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.db import models
 
 from accounts.utils import accept_exactly_one
@@ -12,7 +14,9 @@ class StorageInfo(models.Model):
     class Meta:
         db_table = "storage_info"
 
-
+    @classmethod
+    def get_by_id(cls, storage_id):
+        return cls.objects.get(id = storage_id)
 class PayerAccount(models.Model):
     account_id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=256)
@@ -22,7 +26,7 @@ class PayerAccount(models.Model):
 
     @property
     def accounts(self):
-        return list(LinkedAccount.objects.filter(payer=self.id))
+        return list(LinkedAccount.objects.filter(payer=self))
 
     @classmethod
     def get_by_storage_info(cls, storage_info):
@@ -49,6 +53,10 @@ class ReportInfo(models.Model):
     secret_key = models.CharField(max_length=1024)
     bucket_name = models.CharField(max_length=63) #TODO add min_length
 
+    credit = models.BooleanField(default=True)
+    refund = models.BooleanField(default=True)
+    blended = models.BooleanField(default=True)
+
 
     class Meta:
         db_table = "report_info"
@@ -57,7 +65,11 @@ class ReportInfo(models.Model):
     #     print(args)
     #     print(kwargs)
 
+    @property
+    def list_acounts(self):
+        linked_accounts = LinkedAccount.get_by_report_info(self.id)
+        pprint(linked_accounts)
+        return linked_accounts
+
     # def get_linked_accounts(self):
     #     return [account.account_id for account in self.accounts]
-
-

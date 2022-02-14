@@ -13,8 +13,11 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Bucket Name</th>
                 <th>Prefix</th>
-                <th>In Use</th>
+                <th>Payer Account</th>
+                <th>Linked Accounts</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -25,8 +28,19 @@
             <tr>
                 <td>{{report_info.id}}</td>
                 <td>{{report_info.name}}</td>
+                <td>{{report_info.bucket_name}}</td>
                 <td>{{report_info.prefix}}</td>
-                <td>{{report_info.in_use}}</td>
+                <td>{{report_info.payer.account_id}}</td>
+                <td>
+                    
+                
+                    {% for linked_account in report_info.list_acounts %}
+                        <p>{{linked_account.account_id}}</p>
+                    {% endfor %}
+
+                </td>
+
+                <td></td>
                 <td><a class="btn btn-sm btn-info" href="">Update</a></td>
                 <td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
             </tr>

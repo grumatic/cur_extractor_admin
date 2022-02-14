@@ -14,8 +14,9 @@ class CURReport(models.Model):
         unique_together = ('storage_info', 'manifest_key',)
 
     @classmethod
-    def get_by_account_and_key(cls, account_id, manifest_key):
-        return cls.objects.get(account_id=account_id, manifest_key=manifest_key)
+    def get_by_storage_and_key(cls, storage_id, manifest_key):
+        return cls.objects.get(storage_info=StorageInfo.objects.get(id=storage_id), manifest_key=manifest_key)
+
 
     def is_report_changed(self, last_updated):
         return self.last_updated != last_updated

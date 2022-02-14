@@ -22,13 +22,18 @@ class ReportInfoForm(forms.ModelForm):
     )
     class Meta:
         model = ReportInfo
-        fields = ('name','prefix','payer','access_key','secret_key','bucket_name')
+        fields = (
+            'name',
+            'prefix',
+            'payer',
+            'access_key',
+            'secret_key',
+            'bucket_name',
+            'credit',
+            'refund',
+            'blended'
+        )
 
-    # def save(self, *args, **kwargs):
-    #     print(self)
-    #     print(args)
-    #     print(kwargs)
-    #     super(ReportInfoForm, self).save(*args, **kwargs)
 
 class StorageInfoForm(forms.ModelForm):
     class Meta:

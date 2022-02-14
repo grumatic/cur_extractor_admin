@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 import logging.config
 import os
+from pathlib import Path
 import re
 import shutil
 import traceback
@@ -81,15 +82,11 @@ class S3HandlerClass(object):
         except Exception as e:
             traceback.print_exc()
             logger.error(f'Error during get objects list from S3 - {e}')
-            raise Exception
+            raise Exception from e
 
         downloaded_files_path = []
         # Download contents from s3
         for content in download_obj_list:
-            # TODO remove
-            if "20211101-20211201" not in content:
-                continue
-            # up to here
             download_file_path = os.path.join(download_folder_path, content.replace('/', '&&'))
             self.s3.download_file(
                 Bucket = bucket_name,
@@ -113,7 +110,7 @@ class S3HandlerClass(object):
             object_key = object_key.replace('&&', '/')
 
             self.s3.upload_file(file_path, bucket_name, object_key)
-
+            print(f"Uploading key: {object_key}")
         except Exception as e:
             logger.error(f'Error during upload CUR data to S3 - {e} - {bucket_name} - {file_path}')
             raise Exception
