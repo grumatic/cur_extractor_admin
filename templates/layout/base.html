@@ -52,39 +52,46 @@
         </div>
         <ul>
             <li>
-                <i class="fas fa-user-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_account' %}">Linked Accounts</a>
+                <div>
+                    <a class="left" href="{% url 'view_storage-info' %}">Storage Infos</a>
+                    <a class="right" href="{% url 'create_storage-info' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
             </li>
             <li>
-                <i class="fas fa-table"></i> &nbsp; &nbsp; <a href="{% url 'view_company' %}">Payer Accounts</a>
+                <div>
+                    <a class="left" href="{% url 'view_company' %}">Payer Accounts</a>
+                    <a class="right" href="{% url 'create_company' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
             </li>
             <li>
-                <i class="fas fa-info-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_report-info' %}">Report Infos</a>
+                <div>
+                    <a class="left" href="{% url 'view_account' %}">Linked Accounts</a>
+                    <a class="right" href="{% url 'create_account' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
             </li>
             <li>
-                <i class="fas fa-info-circle"></i> &nbsp; &nbsp; <a href="{% url 'view_storage-info' %}">Storage Infos</a>
+                <div>
+                    <a class="left" href="{% url 'view_report-info' %}">Report Infos</a>
+                    <a class="right" href="{% url 'create_report-info' %}">
+                        <i class="fas fa-plus">
+                    </i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <button name="button" type="submit" onclick="location.href='{% url "cur_hardcoded" %}'"> Send</button>
             </li>
         </ul>
     </div>
     <div class="container">
-        <div class="header">
-            <div class="nav">
-                <div class="directs">
-                    <a href="{% url 'create_account' %}">New LinkedAccount</a>
-                    <a href="{% url 'create_company' %}">New PayerAccount</a>
-                    <a href="{% url 'create_report-info' %}">New Report Info</a>
-                    <a href="{% url 'create_storage-info' %}">New Storage Info</a>
-                </div>
-                <!-- 
-                    Manual Testing the extraction 
-                -->
-                <div class="user">
-                    <button name="button" type="submit" onclick="location.href='{% url "cur_hardcoded" %}'"> Send</button>
-                </div>
-            </div>
-        </div>
         {% block content %}
         {% endblock %}
-
     </div>
     <!-- Specific Page JS goes HERE  -->
     {% block javascripts %}{% endblock javascripts %}

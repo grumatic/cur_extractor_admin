@@ -37,7 +37,11 @@
                     {% endfor %}
                 </td>
                 <td><a class="btn btn-sm btn-info" href="">Update</a></td>
-                <td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+                <td>
+                    <a class="btn btn-sm btn-danger" href="/delete-payer-account/{{payer_account.account_id}}/">
+                        Delete
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </table>

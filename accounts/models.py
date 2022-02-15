@@ -17,6 +17,8 @@ class StorageInfo(models.Model):
     @classmethod
     def get_by_id(cls, storage_id):
         return cls.objects.get(id = storage_id)
+
+
 class PayerAccount(models.Model):
     account_id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=256)
