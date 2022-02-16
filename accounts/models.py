@@ -8,8 +8,8 @@ from accounts.utils import accept_exactly_one
 class StorageInfo(models.Model):
     bucket_name = models.CharField(max_length=63)
     prefix = models.CharField(max_length=1000, blank=True)
-    access_key = models.CharField(max_length=128)
-    secret_key = models.CharField(max_length=1024)
+    # access_key = models.CharField(max_length=128)
+    arn = models.CharField(max_length=1024)
 
     class Meta:
         db_table = "storage_info"
@@ -51,8 +51,9 @@ class ReportInfo(models.Model):
     accounts = models.ManyToManyField(
                             LinkedAccount,
                             blank=True)
-    access_key = models.CharField(max_length=128) #TODO add min_length
-    secret_key = models.CharField(max_length=1024)
+    arn = models.CharField(max_length=1024)
+    # access_key = models.CharField(max_length=128) #TODO add min_length
+    # secret_key = models.CharField(max_length=1024)
     bucket_name = models.CharField(max_length=63) #TODO add min_length
 
     credit = models.BooleanField(default=True)

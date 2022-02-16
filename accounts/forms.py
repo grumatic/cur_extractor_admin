@@ -26,8 +26,9 @@ class ReportInfoForm(forms.ModelForm):
             'name',
             'prefix',
             'payer',
-            'access_key',
-            'secret_key',
+            'arn',
+            # 'access_key',
+            # 'secret_key',
             'bucket_name',
             'credit',
             'refund',
@@ -41,18 +42,18 @@ class StorageInfoForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ReportInfo_Form(forms.Form):
-    name = forms.CharField(max_length=32)
-    prefix = forms.CharField(max_length=128)
-    # payer_id = models.ForeignKey(PayerAccount, on_delete=models.CASCADE)
-    # account_ids = models.ManyToManyField(
-    #                         LinkedAccount,
-    #                         # related_name="account",
-    #                         # null=True,
-    #                         blank=True)
+# class ReportInfo_Form(forms.Form):
+#     name = forms.CharField(max_length=32)
+#     prefix = forms.CharField(max_length=128)
+#     # payer_id = models.ForeignKey(PayerAccount, on_delete=models.CASCADE)
+#     # account_ids = models.ManyToManyField(
+#     #                         LinkedAccount,
+#     #                         # related_name="account",
+#     #                         # null=True,
+#     #                         blank=True)
 
-    color = forms.ModelChoiceField(queryset=PayerAccount.objects.all())
-    speed = forms.ModelChoiceField(queryset=LinkedAccount.objects.all())
-    access_key = forms.CharField(max_length=128) #TODO add min_length
-    secret_key = forms.CharField(max_length=1024)
-    bucket_name = forms.CharField(max_length=63) #TODO add min_length
+#     color = forms.ModelChoiceField(queryset=PayerAccount.objects.all())
+#     speed = forms.ModelChoiceField(queryset=LinkedAccount.objects.all())
+#     access_key = forms.CharField(max_length=128) #TODO add min_length
+#     secret_key = forms.CharField(max_length=1024)
+#     bucket_name = forms.CharField(max_length=63) #TODO add min_length

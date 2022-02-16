@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+import hashlib
 import logging.config
 import os
 from pathlib import Path
@@ -7,6 +8,7 @@ import re
 import shutil
 import traceback
 
+from pprint import pprint
 import boto3
 
 from cur_extractor.Config import Config as configure
@@ -14,139 +16,145 @@ from cur_extractor.Config import Config as configure
 # logging.config.fileConfig(fname = 'cur_extractor/logger.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
+
 class S3HandlerClass(object):
 
-    def __init__(self, access_key, secret_key, storage_id, bucket_name= None):
-        self.access_key = access_key
-        self.secret_key = secret_key
+    def __init__(self,
+            storage_id,
+            arn,
+            bucket_name
+    ):
         self.storage_id = storage_id
+        self.arn = arn
         self.bucket_name = bucket_name
+        self.set_session()
+    
+    def set_session(self):
+        """
+        Set attributes with a new session.
+        """
+        role_credentials = self.get_role_credentials()
 
         try:
-            self.s3 = boto3.client('s3',
-                aws_access_key_id=self.access_key,
-                aws_secret_access_key=self.secret_key)
+            self.s3 = boto3.resource(
+                's3',
+                aws_access_key_id = role_credentials['AccessKeyId'],
+                aws_secret_access_key = role_credentials['SecretAccessKey'],
+                aws_session_token = role_credentials['SessionToken']
+            )
+            self.expiration = role_credentials["Expiration"]
+            self.bucket = self.s3.Bucket(self.bucket_name)
         except Exception as e:
-            logger.error("s3 connection error")
-            raise e
+            logger.error(f"Could not connect to S3 - {e}")
+            raise e from e
 
-    def get_bucket(self):
-        return self.s3.bucket(self.bucket_name)
+        
+
+    def get_role_credentials(self):
+        """
+        Return the STS assumed role credentials.
+        """
+        try:
+            sts_client = boto3.client(
+                'sts',
+                aws_access_key_id=configure.STS_ACCESS_KEY_ID,
+                aws_secret_access_key=configure.STS_SECRET_ACCESS_KEY
+            )
+
+            now = datetime.now()
+            session_key = hashlib.md5(now.isoformat().encode('utf-8')).hexdigest()
+
+            role = sts_client.assume_role(
+                RoleArn=self.arn,
+                RoleSessionName=session_key,
+                ExternalId=configure.EXTERNAL_ID
+            )
+
+            return role['Credentials']
+        except Exception as e:
+            logger.error(f"Could not assume role from STS - {e}")
+            raise e from e
 
     def get_object_as_json(self, key):
-        return json.loads(self.s3.get_object(Bucket=self.bucket_name,
-                                                Key=key)["Body"].read())
-
+        """
+        Return a JSON representation of the object's data.
+        """
+        obj = self.bucket.Object(
+            key=key
+        )
+        return json.loads(obj.get()["Body"].read())
 
     def get_objects_list(self, prefix=""):
-        return self.s3.list_objects_v2(Bucket=self.bucket_name,
-                                        Prefix= prefix)
+        """
+        Returns a list of objects with the given prefix.
+        """
+        return self.bucket.objects.filter(Prefix=prefix)
 
     def download_single_CUR_data(self, report_key, file_name):
         """
-        Download CUR data from S3
+        Download CUR data from S3 and return its download path.
         """
         # Create folder to download CUR data
         download_folder_path = self.get_download_path(self.storage_id)
-        self.make_download_temp_dir(self.storage_id)
+        self.make_temp_dir(download_folder_path)
 
+        # Create the download path
         download_file_path = os.path.join(download_folder_path, file_name)
 
-        self.s3.download_file(
-                Bucket = self.bucket_name,
-                Key = report_key,
-                Filename = download_file_path
-            )
+        self.bucket.download_file(
+            Key = report_key,
+            Filename = download_file_path,
+        )
 
         return download_file_path
-
-
-    def download_CUR_data(self, bucket_name, report_name, report_prefix):
-        """
-        Download CUR data from S3
-        """
-        # Create folder to download CUR data
-        download_folder_path = self.get_download_path(self.account_id)
-        self.make_download_temp_dir(self.storage_id)
-
-        download_obj_list = []
-        # Get objects list
-        try:
-            objects = self.s3.list_objects(
-                Bucket=bucket_name,
-                Prefix=report_prefix)
-            for content in objects['Contents']:
-                object_path = content['Key']
-                if os.path.split(object_path)[1].split('.')[-1] == 'gz':
-                    download_obj_list.append(object_path)
-        except Exception as e:
-            traceback.print_exc()
-            logger.error(f'Error during get objects list from S3 - {e}')
-            raise Exception from e
-
-        downloaded_files_path = []
-        # Download contents from s3
-        for content in download_obj_list:
-            download_file_path = os.path.join(download_folder_path, content.replace('/', '&&'))
-            self.s3.download_file(
-                Bucket = bucket_name,
-                Key = content,
-                Filename = download_file_path
-            )
-            downloaded_files_path.append(download_file_path)
-
-        # Return downloaded files list
-        return downloaded_files_path
 
     def upload_CUR_data(self, file_path):
         """
         Upload CUR data to S3
         """
-        # TODO use the instance's bucket_name
-        bucket_name = "grumatic-dev-pandas"
         try:
-
             object_key = file_path[file_path.rfind('/')+1:]
             object_key = object_key.replace('&&', '/')
-
-            self.s3.upload_file(file_path, bucket_name, object_key)
-            print(f"Uploading key: {object_key}")
+            self.bucket.upload_file(Filename=file_path, Key=object_key)
         except Exception as e:
-            logger.error(f'Error during upload CUR data to S3 - {e} - {bucket_name} - {file_path}')
-            raise Exception
+            logger.error(f'Error during upload CUR data to S3 - {e} - {file_path}')
+            raise Exception from e
 
     def get_download_path(self, account_id):
-        return "{temp_path}/{account_id}".format(
-                            temp_path = configure.DOWNLOAD_PATH, 
-                            account_id = account_id)
-
-    def make_download_temp_dir(self, account_id):
         """
-        Create download folder
+        Make and return the download path for the new file.
         """
-        download_path = self.get_download_path(account_id)
+        return f"{configure.DOWNLOAD_PATH}/{account_id}"
 
+    def make_temp_dir(self, path):
+        """
+        Create a temporary folder.
+        """
         # Create directory if download path does not exist
-        if(not(os.path.isdir(download_path) and os.path.exists(download_path))):
+        if not(os.path.isdir(path) and os.path.exists(path)):
             try:
-                os.makedirs(download_path)
-            except OSError:
-                logger.error(f"Creation of the directory {download_path} failed")
-                raise Exception("Creation of the directory {} failed" % download_path)
-            logger.info("Successfully created the directory %s" % download_path)
+                os.makedirs(path)
+            except OSError as e:
+                logger.error(f"Creation of the directory {path} failed")
+                raise Exception(f"Creation of the directory {path} failed") from e
+            logger.info("Successfully created the directory path")
 
-        return True
+        return path
 
     def remove_download_temp_dir(self):
+        """
+        Delete the temporary folder
+        """
         download_path = configure.DOWNLOAD_PATH
 
         # Remove temp folder
         if os.path.isdir(download_path) and os.path.exists(download_path):
             try:
                 shutil.rmtree(download_path)
-            except OSError:
-                logger.info("Deletion of the directory %s failed" % download_path)
-                raise Exception("Deletion of the directory {} failed" % download_path)
-            logger.info("Successfully deleted the directory %s" % download_path)
+            except OSError as e:
+                logger.info(f"Deletion of the directory {download_path} failed")
+                raise Exception(f"Deletion of the directory {download_path} failed") from e
+            logger.info("Successfully deleted the directory {download_path}")
 
         return True
+
