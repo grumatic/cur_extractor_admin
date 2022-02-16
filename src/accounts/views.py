@@ -23,8 +23,6 @@ from cur import tasks
 
 
 def login_view(request):
-    if request.session:
-        pprint(vars(request.session))
     if request.method == 'POST':
         user = authenticate(
             username=request.POST.get('username'),
@@ -126,8 +124,6 @@ def create_account(request):
         form = AccountForm(request.POST)
         if form.is_valid():
             form.save()
-        else:
-            print(form.errors)
         return redirect('/create-linked-account/')
 
     context = {

@@ -35,7 +35,6 @@ def needs_update(report_obj, s3_downloader):
     Returns whether the report needs to be updated
     """
     try:
-        print(report_obj)
         report_manifest = CURReport.get_by_storage_and_key(
             storage_id=s3_downloader.storage_id,
             manifest_key=report_obj.key
@@ -215,11 +214,9 @@ def run():
                 manifest_key=report["manifest_key"],
                 last_updated=report["last_updated"]
             )
-            print(cur_track)
             cur_track.save()
 
         # Delete the temp folder
         if configure.NEED_REMOVE_TEMP:
             # logger.info('Remove temp folder')
             s3_downloader.remove_download_temp_dir()
-            print("---------")

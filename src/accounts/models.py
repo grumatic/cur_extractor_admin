@@ -8,7 +8,6 @@ from accounts.utils import accept_exactly_one
 class StorageInfo(models.Model):
     bucket_name = models.CharField(max_length=63)
     prefix = models.CharField(max_length=1000, blank=True)
-    # access_key = models.CharField(max_length=128)
     arn = models.CharField(max_length=1024)
 
     class Meta:
@@ -52,9 +51,7 @@ class ReportInfo(models.Model):
                             LinkedAccount,
                             blank=True)
     arn = models.CharField(max_length=1024)
-    # access_key = models.CharField(max_length=128) #TODO add min_length
-    # secret_key = models.CharField(max_length=1024)
-    bucket_name = models.CharField(max_length=63) #TODO add min_length
+    bucket_name = models.CharField(max_length=63)
 
     credit = models.BooleanField(default=True)
     refund = models.BooleanField(default=True)
@@ -66,15 +63,8 @@ class ReportInfo(models.Model):
     class Meta:
         db_table = "report_info"
 
-    # def save(self, *args, **kwargs):
-    #     print(args)
-    #     print(kwargs)
 
     @property
     def list_acounts(self):
-        linked_accounts = LinkedAccount.get_by_report_info(self.id)
-        pprint(linked_accounts)
-        return linked_accounts
+        return LinkedAccount.get_by_report_info(self.id)
 
-    # def get_linked_accounts(self):
-    #     return [account.account_id for account in self.accounts]

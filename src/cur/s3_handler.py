@@ -56,12 +56,6 @@ class S3HandlerClass(object):
         Return the STS assumed role credentials.
         """
         try:
-
-            print("================================")
-            print(configure.STS_ACCESS_KEY_ID)
-            print(configure.STS_ACCESS_KEY_ID)
-            print(configure.STS_SECRET_ACCESS_KEY)
-            print("================================")
             sts_client = boto3.client(
                 'sts',
                 aws_access_key_id=os.getenv('STS_ACCESS_KEY_ID'),
