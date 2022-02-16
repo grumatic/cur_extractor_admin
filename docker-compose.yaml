@@ -1,7 +1,23 @@
 version: '3'
 services:
+    redis:
+        image: redis:latest
+        container_name: rd01
+        ports:
+            - '6379:6379'
     mongo:
         image: 'mongo:5.0.5'
         container_name: cur_mongo
         ports:
             - '27017:27017'
+    django_web:
+        build:
+            context: .
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./src:/app
+        env_file:
+            - .env
+        command: sh -c "sh /app/dev-entrypoint.sh"
+
