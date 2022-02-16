@@ -1,4 +1,4 @@
-(Temporary README- also found int the install-dev.md)
+(Temporary README- also found in install-dev.md)
 
 ## DEVELOPMENT installation:
 
