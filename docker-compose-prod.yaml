@@ -13,20 +13,24 @@ services:
     django_web:
         build:
             context: .
+            dockerfile: Dockerfile-prod
         container_name: cur_django
         ports:
             - "8000:8000"
         volumes:
             - ./src:/app
+            - static_data:/vol/web
         env_file:
             - .env
-        command: sh -c "sh /scripts/dev-entrypoint.sh"
+        command: sh -c "/scripts/prod-entrypoint.sh"
+        # command: sh -c "python manage.py runserver 0.0.0.0:8000"
         depends_on:
             - redis
             - mongo
     celery_worker:
         build:
             context: .
+            dockerfile: Dockerfile-prod
         container_name: cur_worker01
         volumes:
             - ./src:/app
@@ -40,6 +44,7 @@ services:
     celery_beat:
         build:
             context: .
+            dockerfile: Dockerfile-prod
         container_name: cur_beat
         volumes:
             - ./src:/app
@@ -50,3 +55,17 @@ services:
             - redis
             - mongo
 
+    proxy:
+        build:
+            context: ./proxy
+        container_name: proxy
+        volumes:
+            - static_data:/vol/static
+        ports:
+            - "8080:8080"
+        depends_on:
+            - django_web
+
+
+volumes:
+    static_data:

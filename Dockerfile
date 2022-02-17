@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY ./src /app
 COPY ./static /static
-COPY ./templates /templates
+COPY ./scripts /scripts
 
 WORKDIR /app

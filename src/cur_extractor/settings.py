@@ -72,9 +72,9 @@ TEMPLATES = [
 ]
 
 STATICFILES_DIRS = [
-    Path.joinpath(Path(BASE_DIR.parent), "static/"),
+    Path.joinpath(Path(BASE_DIR), "static/"),
 ]
-
+print(BASE_DIR)
 WSGI_APPLICATION = 'cur_extractor.wsgi.application'
 
 
@@ -128,8 +128,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = 'static/'
+
+
+STATIC_URL = '/static/static/'
+MEDIA_URL = '/static/media/'
+
+STATIC_ROOT = '/vol/web/static'
+MEDIA_ROOT = '/vol/web/media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
