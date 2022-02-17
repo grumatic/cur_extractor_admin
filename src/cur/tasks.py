@@ -18,12 +18,8 @@ from accounts.models import (LinkedAccount,
 
 from cur_extractor.Config import Config as configure
 from cur.s3_handler import S3HandlerClass
-from cur.extractor import (make_tmp_folder_to_extract_result,
-                            extract_data_to_csv,
-                            make_folder_for_company_result,
-                            create_folder)
+from cur.extractor import (extract_chunk)
 from cur.models import CURReport
-from cur.Utils.GZIPHandler import decompress_gz_file, compress_gz_file
 
 # logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -87,55 +83,6 @@ def get_report_infos(storage_info):
     """
     payers = PayerAccount.get_by_storage_info(storage_info)
     return ReportInfo.objects.filter(payer__in=list(payers))
-
-def extract_chunk(chunk, report_info, account_ids):
-    """
-    Extract data from a dataframe chunk, according to the report.
-    """
-    if account_ids:
-        chunk = chunk.loc[chunk['bill/PayerAccountId'].isin(account_ids)]
-    line_item_type = []
-    columns = chunk.columns
-
-    # TODO use config values
-
-    if not report_info.credit:
-        line_item_type.append("Credit")
-
-    if not report_info.tax:
-        line_item_type.append("Tax")
-
-    if not report_info.refund:
-        line_item_type.append("Refund")
-
-    if not report_info.discount:
-        line_item_type.extend(("EDPDiscount", "RIVolumeDiscount"))
-
-        if "discount/RIVolumeDiscount" in columns:
-            chunk["discount/RIVolumeDiscount"] = 0
-        if "discount/EDPDiscount" in columns:
-            chunk["discount/EDPDiscount"] = 0
-        if "discount/TotalDiscount" in columns:
-            chunk["discount/TotalDiscount"] = 0
-        if "discount/SPPDiscount" in columns:
-            chunk["discount/SPPDiscount"] = 0
-
-
-    if line_item_type:
-        chunk = chunk.loc[~chunk['lineItem/LineItemType'].isin(line_item_type)]
-
-    if not report_info.blended:
-        columns = chunk.columns
-        if 'lineItem/UnblendedRate' in columns:
-            chunk['lineItem/BlendedRate'] = chunk['lineItem/UnblendedRate']
-        if 'lineItem/UnblendedCost' in columns:
-            chunk['lineItem/BlendedCost'] = chunk['lineItem/UnblendedCost']
-        if 'lineItem/NetUnblendedRate' in columns:
-            chunk['lineItem/NetBlendedRate'] = chunk['lineItem/NetUnblendedRate']
-        if 'lineItem/NetUnblendedCost' in columns:
-            chunk['lineItem/NetBlendedCost'] = chunk['lineItem/NetUnblendedCost']
-
-    return chunk
 
 def extract_data(input_file, output_file, report_info, account_ids):
     """

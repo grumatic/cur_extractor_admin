@@ -8,6 +8,74 @@ from cur_extractor.Config import Config as configure
 # logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
+
+
+def to_drop_savings_negation(chunk):
+    """
+    Get dataframe tha must be dropped.
+    Payer account ID != from usage account ID and the savings plan ARN belongs to the payer's account
+    """
+    drop_df = df[(df['lineItem/LineItemType']=="SavingsPlanRecurringFee") & (df['savingsPlan/SavingsPlanARN'].notnull())]
+    drop_df = drop_df[drop_df['lineItem/UsageAccountId'] != drop_df['bill/PayerAccountId']]
+
+    if len(drop_df) == 0:
+        return False, drop_df
+    drop_df = drop_df[drop_df.apply(lambda x: str(x['lineItem/UsageAccountId']) in x['savingsPlan/SavingsPlanARN'], axis=1)]
+    return True, chunk
+
+def extract_chunk(chunk, report_info, account_ids):
+    """
+    Extract data from a dataframe chunk, according to the report.
+    """
+    if account_ids:
+        chunk = chunk.loc[chunk['bill/PayerAccountId'].isin(account_ids)]
+    line_item_type = []
+    columns = chunk.columns
+
+    result, drop_df = to_drop_savings_negation(chunk)
+    if result:
+        df= pd.concat([df, drop_df]).drop_duplicates(keep=False)
+
+    if not report_info.credit:
+        line_item_type.append("Credit")
+
+    if not report_info.tax:
+        line_item_type.append("Tax")
+
+    if not report_info.refund:
+        line_item_type.append("Refund")
+
+    if not report_info.discount:
+        line_item_type.extend(("EDPDiscount", "RIVolumeDiscount"))
+
+        if "discount/RIVolumeDiscount" in columns:
+            chunk["discount/RIVolumeDiscount"] = 0
+        if "discount/EDPDiscount" in columns:
+            chunk["discount/EDPDiscount"] = 0
+        if "discount/TotalDiscount" in columns:
+            chunk["discount/TotalDiscount"] = 0
+        if "discount/SPPDiscount" in columns:
+            chunk["discount/SPPDiscount"] = 0
+
+
+    if line_item_type:
+        chunk = chunk.loc[~chunk['lineItem/LineItemType'].isin(line_item_type)]
+
+    if not report_info.blended:
+        columns = chunk.columns
+        if 'lineItem/UnblendedRate' in columns:
+            chunk['lineItem/BlendedRate'] = chunk['lineItem/UnblendedRate']
+        if 'lineItem/UnblendedCost' in columns:
+            chunk['lineItem/BlendedCost'] = chunk['lineItem/UnblendedCost']
+        if 'lineItem/NetUnblendedRate' in columns:
+            chunk['lineItem/NetBlendedRate'] = chunk['lineItem/NetUnblendedRate']
+        if 'lineItem/NetUnblendedCost' in columns:
+            chunk['lineItem/NetBlendedCost'] = chunk['lineItem/NetUnblendedCost']
+
+    return chunk
+
+
+
 def make_tmp_folder_to_extract_result(temp_path):
     """
     Create folder to save extract result
