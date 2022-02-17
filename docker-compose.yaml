@@ -2,7 +2,7 @@ version: '3'
 services:
     redis:
         image: redis:latest
-        container_name: rd01
+        container_name: cur_redis01
         ports:
             - '6379:6379'
     mongo:
@@ -13,6 +13,7 @@ services:
     django_web:
         build:
             context: .
+        container_name: cur_django
         ports:
             - "8000:8000"
         volumes:
@@ -20,4 +21,32 @@ services:
         env_file:
             - .env
         command: sh -c "sh /app/dev-entrypoint.sh"
+        depends_on:
+            - redis
+            - mongo
+    celery_worker:
+        build:
+            context: .
+        container_name: cur_worker01
+        volumes:
+            - ./src:/app
+        env_file:
+            - .env
+        command: celery -A cur_extractor worker -l INFO
+        depends_on:
+            - redis
+            - mongo
+
+    celery_beat:
+        build:
+            context: .
+        container_name: cur_beat
+        volumes:
+            - ./src:/app
+        env_file:
+            - .env
+        command: celery -A cur_extractor beat -l INFO
+        depends_on:
+            - redis
+            - mongo
 

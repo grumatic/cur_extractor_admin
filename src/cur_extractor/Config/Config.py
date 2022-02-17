@@ -1,5 +1,11 @@
 # Interval to run extracte
-RUNNING_INTERVAL = '0 */12 * * *'
+# Equivalent of cron schedule notation '0 * * * *'
+BEAT_MINUTE = '0'
+BEAT_HOUR = '*'
+BEAT_DAY_OF_WEEK = '*'
+BEAT_MONTH_OF_YEAR = '*'
+BEAT_DAY_OF_MONTH = '*'
+
 # Path for CUR data download
 DOWNLOAD_PATH = './tmp'
 # Default prefix added to the upload key file
