@@ -20,7 +20,7 @@ services:
             - ./src:/app
         env_file:
             - .env
-        command: sh -c "sh /scripts/dev-entrypoint.sh"
+        command: sh -c "dev-entrypoint.sh"
         depends_on:
             - redis
             - mongo

@@ -74,7 +74,6 @@ TEMPLATES = [
 STATICFILES_DIRS = [
     Path.joinpath(Path(BASE_DIR), "static/"),
 ]
-print(BASE_DIR)
 WSGI_APPLICATION = 'cur_extractor.wsgi.application'
 
 
