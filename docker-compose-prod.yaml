@@ -21,6 +21,8 @@ services:
             - static_data:/vol/web
         env_file:
             - .env
+        environment:
+            - DEBUG=0
         command: sh -c "prod-entrypoint.sh"
         # command: sh -c "python manage.py runserver 0.0.0.0:8000"
         depends_on:
@@ -34,6 +36,8 @@ services:
             - ./src:/app
         env_file:
             - .env
+        environment:
+            - DEBUG=0
         command: celery -A cur_extractor worker -l INFO
         depends_on:
             - redis
@@ -47,6 +51,8 @@ services:
             - ./src:/app
         env_file:
             - .env
+        environment:
+            - DEBUG=0
         command: celery -A cur_extractor beat -l INFO
         depends_on:
             - redis

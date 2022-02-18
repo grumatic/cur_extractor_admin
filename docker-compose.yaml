@@ -20,6 +20,8 @@ services:
             - ./src:/app
         env_file:
             - .env
+        environment:
+            - DEBUG=1
         command: sh -c "dev-entrypoint.sh"
         depends_on:
             - redis
@@ -32,6 +34,8 @@ services:
             - ./src:/app
         env_file:
             - .env
+        environment:
+            - DEBUG=1
         command: celery -A cur_extractor worker -l INFO
         depends_on:
             - redis
@@ -45,6 +49,8 @@ services:
             - ./src:/app
         env_file:
             - .env
+        environment:
+            - DEBUG=1
         command: celery -A cur_extractor beat -l INFO
         depends_on:
             - redis
