@@ -34,11 +34,13 @@ git clone git@github.com:grumatic/cur_extractor_admin.git
 
 * Build through docker-compose
 
-``` development using "runserver"
+development using "runserver"
+``` 
 docker-compose up --build
 ```
 
-``` production using uWSGI and NGINX
+production using uWSGI and NGINX
+``` 
 docker-compose -f docker-compose-prod.yaml up --build
 ```
 
