@@ -15,7 +15,7 @@ def to_drop_savings_negation(chunk):
     Get dataframe tha must be dropped.
     Payer account ID != from usage account ID and the savings plan ARN belongs to the payer's account
     """
-    drop_df = df[(df['lineItem/LineItemType']=="SavingsPlanRecurringFee") & (df['savingsPlan/SavingsPlanARN'].notnull())]
+    drop_df = df[(df['lineItem/LineItemType']=="SavingsPlanNegation") & (df['savingsPlan/SavingsPlanARN'].notnull())]
     drop_df = drop_df[drop_df['lineItem/UsageAccountId'] != drop_df['bill/PayerAccountId']]
 
     if len(drop_df) == 0:
