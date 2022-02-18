@@ -6,7 +6,7 @@ This CUR Extractor uses Django as its web framework, served by NGINX and uWSGI.
 
 Example use case:
 
-!(CUR Extractor Use Case)[images/use-case.png]
+![images/use-case.png](images/use-case.png)
 
 ## Setting up the environment:
 
@@ -50,7 +50,7 @@ docker-compose -f docker-compose-prod.yaml up --build
 
 The architecture used by the containers can be found bellow:
 
-!(Container Architecture)[images/container-architecture.png]
+![Container Architecture](images/container-architecture.png)
 
 ## Using the CUR Extractor
 
