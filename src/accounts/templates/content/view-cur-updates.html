@@ -1,0 +1,42 @@
+{% extends 'layout/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class="content">
+    <div class="listing-table"></div>
+        <div class="tittle">
+                <h2>Past CUR extractions</h2>                
+        </div>
+        <div class="download">
+            <a href="{% url 'download-cur_updates' %}">
+                Download All
+            </a>
+        </div>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Last Updated</th>
+                <th>Storage</th>
+                <th>Report</th>
+                <th>Manifest Key</th>
+            </tr>
+
+            {% for cur_update in cur_updates %}
+            <tr>
+                <td>{{cur_update.id}}</td>
+                <td>{{cur_update.last_updated}}</td>
+                <td>{{cur_update.storage_info}}</td>
+                <td>
+                    <a href="{% url 'view-cur_updates_by_report' cur_update.report_info.id %}">
+                        {{cur_update.report_info}}
+                    </a>
+                </td>
+                <td>{{cur_update.date_str}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

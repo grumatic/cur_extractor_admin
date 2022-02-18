@@ -13,6 +13,9 @@ class StorageInfo(models.Model):
     class Meta:
         db_table = "storage_info"
 
+    def __str__(self):
+        return f"{self.id}- {self.bucket_name}/{self.prefix}"
+
     @classmethod
     def get_by_id(cls, storage_id):
         return cls.objects.get(id = storage_id)
@@ -25,6 +28,9 @@ class PayerAccount(models.Model):
     class Meta:
         db_table = "payer"
 
+    def __str__(self):
+        return f"{self.name}- {self.account_id}"
+
     @property
     def accounts(self):
         return list(LinkedAccount.objects.filter(payer=self))
@@ -35,9 +41,16 @@ class PayerAccount(models.Model):
 
 class LinkedAccount(models.Model):
     account_id = models.BigIntegerField(primary_key=True)
+    name = models.CharField(max_length=256)
     payer = models.ForeignKey(PayerAccount, on_delete=models.CASCADE)
+
+
     class Meta:
         db_table = "account"
+
+
+    def __str__(self):
+        return f"{self.name}- {self.account_id}"
 
     @classmethod
     def get_by_report_info(cls, report_info):
@@ -64,7 +77,9 @@ class ReportInfo(models.Model):
         db_table = "report_info"
 
 
+    def __str__(self):
+        return f"{self.id} [{self.name}]- {self.bucket_name}/{self.prefix}"
+
     @property
     def list_acounts(self):
         return LinkedAccount.get_by_report_info(self.id)
-

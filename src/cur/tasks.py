@@ -99,7 +99,7 @@ def extract_data(input_file, output_file, report_info, account_ids):
         header = False
 
 
-def update_report(downloaded_path, report_infos, s3_downloader):
+def update_report(downloaded_path, report_infos, s3_downloader, report, storage_info):
     """
     Iterate through the report_infos, extract data updating.
     """
@@ -121,6 +121,15 @@ def update_report(downloaded_path, report_infos, s3_downloader):
                         )
 
         s3_uploader.upload_CUR_data(file_path=upload_path)
+
+
+        cur_track = CURReport(
+            storage_info=storage_info,
+            report_info=report_info,
+            manifest_key=report["manifest_key"],
+            last_updated=report["last_updated"]
+        )
+        cur_track.save()
 
 
 @app.task
@@ -153,14 +162,14 @@ def run():
             # Go through the reports
             for downloaded_path in downloaded_paths:
                 # Extract data per report & upload it
-                update_report(downloaded_path, report_infos, s3_downloader)
+                update_report(
+                    downloaded_path,
+                    report_infos,
+                    s3_downloader,
+                    report,
+                    storage_info
+                )
 
-            cur_track = CURReport(
-                storage_info=storage_info,
-                manifest_key=report["manifest_key"],
-                last_updated=report["last_updated"]
-            )
-            cur_track.save()
 
         # Delete the temp folder
         if configure.NEED_REMOVE_TEMP:

@@ -268,3 +268,10 @@ th,td {
     width: 50px;
     height: 50px;
 }
+
+.container .content .download {
+    margin: 10px;
+}
+.container .content .download a {
+    padding: 10px;
+}
