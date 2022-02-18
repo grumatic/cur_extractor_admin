@@ -158,7 +158,7 @@ def create_report_info(request):
         return redirect('/create-report-info')
 
     context = {
-        'title': "Report Info",
+        'title': "Output CUR Info",
         'form': form.as_p
         }
     return render(request, 'content/create-form.html', context)
@@ -175,7 +175,7 @@ def create_storage_info(request):
         return redirect('/create-storage-info')
 
     context = {
-        'title': "Storage Info",
+        'title': "Original CUR Info",
         'form': form.as_p
         }
     return render(request, 'content/create-form.html', context)
