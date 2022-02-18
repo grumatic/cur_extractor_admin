@@ -88,9 +88,8 @@ def extract_data(input_file, output_file, report_info, account_ids):
     """
     Extract the datat from the input_file and write it to the output_file.
     """
-    chunk_size = 1e5
     header = True
-    for chunk in pd.read_csv(input_file, chunksize=chunk_size):
+    for chunk in pd.read_csv(input_file, chunksize=configure.CHUNK_SIZE):
         chunk = extract_chunk(chunk, report_info, account_ids)
         chunk.to_csv(output_file,
                     header=header,

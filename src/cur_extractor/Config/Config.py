@@ -13,3 +13,5 @@ DEFAULT_PREFIX= 'grumatic-cur'
 # Remove temp folder after extract
 NEED_REMOVE_TEMP = True
 
+CHUNK_SIZE = 1e5
+
