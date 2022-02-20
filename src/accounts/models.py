@@ -6,6 +6,7 @@ from accounts.utils import accept_exactly_one
 
 
 class StorageInfo(models.Model):
+    name = models.CharField(max_length=63)
     bucket_name = models.CharField(max_length=63)
     prefix = models.CharField(max_length=1000, blank=True)
     arn = models.CharField(max_length=1024)
@@ -14,7 +15,7 @@ class StorageInfo(models.Model):
         db_table = "storage_info"
 
     def __str__(self):
-        return f"{self.id}- {self.bucket_name}/{self.prefix}"
+        return f"{self.name}"
 
     @classmethod
     def get_by_id(cls, storage_id):
@@ -29,7 +30,7 @@ class PayerAccount(models.Model):
         db_table = "payer"
 
     def __str__(self):
-        return f"{self.name}- {self.account_id}"
+        return f"{self.name}"
 
     @property
     def accounts(self):
@@ -50,7 +51,7 @@ class LinkedAccount(models.Model):
 
 
     def __str__(self):
-        return f"{self.name}- {self.account_id}"
+        return f"{self.name}"
 
     @classmethod
     def get_by_report_info(cls, report_info):
@@ -78,7 +79,7 @@ class ReportInfo(models.Model):
 
 
     def __str__(self):
-        return f"{self.id} [{self.name}]- {self.bucket_name}/{self.prefix}"
+        return f"{self.name}"
 
     @property
     def list_acounts(self):
