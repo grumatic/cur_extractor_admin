@@ -60,20 +60,26 @@ The architecture used by the containers can be found bellow:
 * Login with the admin username and password used in the `.env` file.
 
 * You must create (in order):
-    * Storage Info
-        - The Storage Info ARN's role must have read permission of the bucket selected
+    * Original CUR Info
+        - The Original CUR Info ARN's role must have read permission of the bucket selected
         - The original CUR reports will be read from here
     * Payer Acccount
-        - The Storage Info you select must be the one which has the account's CUR reports
+        - The Original CUR Info you select must be the one which has the account's CUR reports
     * Linked Account (optional)
         - Must be linked with one Payer Account.
-        - This account can be use to filter the reports in the Report Info
-    * Report Info
-        - The Report Info ARN's role must have write permission to the bucket entered
+        - This account can be use to filter the reports in the Output CUR Info
+    * Output CUR Info
+        - The Output CUR Info ARN's role must have write permission to the bucket entered
         - The report will be generated according to the Payer account selected.
         - The fields which have its cross box selected, will be included in the report.
         if you wish to remove them, you should unselect their respective cross box.
         - The accounts can be selected for more granular filtering. If no account is selected, all accounts included in the payer account's report will included in the report.
+
+
+* CUR Updates:
+
+A list of the last 100 updates can be seen in this page. A list of all the updates can also be downloaded here.
+Note that the updates are stored per Original CUR (different date CUR will be treated as a separate report).
 
 
 ### Selectable fields
