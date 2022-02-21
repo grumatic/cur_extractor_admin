@@ -106,7 +106,31 @@ The CUR Extractor requires read permissions to the bucket which contains the ori
 
 **In the IAM Console**
 
-1- Create policy to allow verifying the bucket and retrieve/upload objects. 
+1- Create a User with programmatic access with the following policy:
+
+**Policy**
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole",
+                "sts:GetFederationToken"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+This user's access key id and secret access key should be used as the STS_ACCESS_KEY_ID and STS_SECRET_ACCESS_KEY environment variables respectively.
+
+
+2- Create policy to allow verifying the bucket and retrieve/upload objects. 
 
 **Sample read policy:**
 
@@ -165,7 +189,7 @@ The CUR Extractor requires read permissions to the bucket which contains the ori
 ```
  
 
-2- Create a new Role: 
+3- Create a new Role: 
 
  
 
