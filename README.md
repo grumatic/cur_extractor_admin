@@ -194,16 +194,12 @@ This user's access key id and secret access key should be used as the STS_ACCESS
  
 
 * **Trusted entity type:**  AWS Account 
-
 * **Select “Another AWS Account”**
     * <Enter your account ID> 
-
 * **Select “Require External ID”**
     * <Enter external ID (recommended)>
-
 * **Next (Add permissions)**
     * <Select previously created policy> 
-
 * **Next (Review)**
 * <Enter a name for the Role> 
 * <Enter description> (optional) 
