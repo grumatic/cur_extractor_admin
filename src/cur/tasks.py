@@ -109,7 +109,7 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
 
         output_folder = f"{downloaded_path[:downloaded_path.rfind('/')+1]}{report_info.id}/"
         output_folder = s3_downloader.make_temp_dir(output_folder)
-        new_key = f"{report_info.prefix.replace('/','&&')}{configure.DEFAULT_PREFIX}&&{downloaded_path.split('&&')[-2]}&&{downloaded_path.split('&&')[-1]}"
+        new_key = f"{configure.DEFAULT_PREFIX}&&{downloaded_path.split('&&')[-2]}&&{downloaded_path.split('&&')[-1]}"
         upload_path = f"{output_folder}{new_key}"
         
         extract_data(downloaded_path, upload_path, report_info, account_ids)

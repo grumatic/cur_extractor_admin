@@ -59,7 +59,6 @@ class LinkedAccount(models.Model):
 
 class ReportInfo(models.Model):
     name = models.CharField(max_length=32)
-    prefix = models.CharField(max_length=128)
     payer = models.ForeignKey(PayerAccount, on_delete=models.CASCADE)
     accounts = models.ManyToManyField(
                             LinkedAccount,

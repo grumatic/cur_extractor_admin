@@ -23,7 +23,6 @@ class ReportInfoForm(forms.ModelForm):
         model = ReportInfo
         fields = (
             'name',
-            'prefix',
             'payer',
             'arn',
             'bucket_name',
