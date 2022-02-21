@@ -22,6 +22,8 @@ services:
             - .env
         environment:
             - DEBUG=1
+            - MONGO_NAME=mongo
+            - CELERY_BROKER_URL=redis://redis:6379/0
         command: sh -c "dev-entrypoint.sh"
         depends_on:
             - redis
@@ -36,6 +38,8 @@ services:
             - .env
         environment:
             - DEBUG=1
+            - MONGO_NAME=mongo
+            - CELERY_BROKER_URL=redis://redis:6379/0
         command: celery -A cur_extractor worker -l INFO
         depends_on:
             - redis
@@ -51,6 +55,8 @@ services:
             - .env
         environment:
             - DEBUG=1
+            - MONGO_NAME=mongo
+            - CELERY_BROKER_URL=redis://redis:6379/0
         command: celery -A cur_extractor beat -l INFO
         depends_on:
             - redis
