@@ -33,7 +33,7 @@ git clone git@github.com:grumatic/cur_extractor_admin.git
     * BEAT_\* - Used by celery to schedule task runs (default is at minue 00 every hour)
     * DOWNLOAD_PATH - will be the temporary path for the CUR data (deleted after every task if `NEED_REMOVE_TEMP` is `True`)
     * DEFAULT_PREFIX - default prefix added to the S3 object key
-    * NEED_REMOVE_TEMP - whether the `DOWNLOAD_PATH` is supposed to be deleted afte the task is ran
+    * NEED_REMOVE_TEMP - whether the `DOWNLOAD_PATH` is supposed to be deleted after the task is ran
     * CHUNK_SIZE - the size of chunks analyzed. (bigger chunk sizes need more memory)
 
 * Build through docker-compose
