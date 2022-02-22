@@ -5,6 +5,9 @@ import os
 
 from cur_extractor.Config import Config as configure
 
+
+import pandas as pd
+
 # logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
