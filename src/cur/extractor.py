@@ -37,7 +37,7 @@ def extract_chunk(chunk, report_info, account_ids):
 
     result, drop_df = to_drop_savings_negation(chunk)
     if result:
-        df= pd.concat([df, drop_df]).drop_duplicates(keep=False)
+        df= pd.concat([chunk, drop_df]).drop_duplicates(keep=False)
 
     if not report_info.credit:
         line_item_type.append("Credit")
