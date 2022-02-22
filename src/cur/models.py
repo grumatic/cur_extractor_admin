@@ -14,18 +14,25 @@ class CURReport(models.Model):
         db_table = 'cur_report'
         unique_together = ('report_info', 'manifest_key',)
 
+    @property
+    def date_str(self):
+        return self.manifest_key.split('/')[-2]
+
     @classmethod
     def get_by_storage_and_key(cls, storage_id, manifest_key):
-        return cls.objects.get(storage_info=StorageInfo.objects.get(id=storage_id), manifest_key=manifest_key)
+        return cls.objects.filter(storage_info=StorageInfo.objects.get(id=storage_id), manifest_key=manifest_key)[0]
 
-
-    def is_report_changed(self, last_updated):
-        return self.last_updated != last_updated
 
     @classmethod
     def filter_by_account(cls, account_id):
         return cls.objects.filter(account_id=account_id)
 
-    @property
-    def date_str(self):
-        return self.manifest_key.split('/')[-2]
+    @classmethod
+    def get_by_report_and_key(cls, report_info, manifest_key):
+        try:
+            return cls.objects.get(report_info=report_info, manifest_key=manifest_key)
+        except CURReport.DoesNotExist as e:
+            return None
+
+    def is_report_changed(self, last_updated):
+        return self.last_updated != last_updated

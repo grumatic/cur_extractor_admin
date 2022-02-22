@@ -26,13 +26,13 @@ logger = logging.getLogger(__name__)
 
 
 
-def needs_update(report_obj, s3_downloader):
+def needs_update(report_obj, storage_id):
     """
     Returns whether the report needs to be updated
     """
     try:
         report_manifest = CURReport.get_by_storage_and_key(
-            storage_id=s3_downloader.storage_id,
+            storage_id=storage_id,
             manifest_key=report_obj.key
         )
         return report_manifest.is_report_changed(report_obj.last_modified)
@@ -52,7 +52,7 @@ def get_changed_reports(s3_downloader: S3HandlerClass, prefix=""):
     objects = s3_downloader.get_objects_list(prefix= prefix)
     changed_reports = []
     for obj in objects:
-        if obj.key.endswith("Manifest.json") and needs_update(obj,s3_downloader):
+        if obj.key.endswith("Manifest.json"): # and needs_update(obj,s3_downloader.storage_id):
             body = s3_downloader.get_object_as_json(key=obj.key)
 
             changed_reports.append(
@@ -123,12 +123,19 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
         s3_uploader.upload_CUR_data(file_path=upload_path)
 
 
-        cur_track = CURReport(
-            storage_info=storage_info,
+        cur_track = CURReport.get_by_report_and_key(
             report_info=report_info,
-            manifest_key=report["manifest_key"],
-            last_updated=report["last_updated"]
+            manifest_key=report["manifest_key"]
         )
+        if cur_track:
+            cur_track.last_updated = report["last_updated"]
+        else:
+            cur_track = CURReport(
+                storage_info=storage_info,
+                report_info=report_info,
+                manifest_key=report["manifest_key"],
+                last_updated=report["last_updated"]
+            )
         cur_track.save()
 
 
