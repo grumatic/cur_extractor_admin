@@ -20,7 +20,10 @@ class CURReport(models.Model):
 
     @classmethod
     def get_by_storage_and_key(cls, storage_id, manifest_key):
-        return cls.objects.filter(storage_info=StorageInfo.objects.get(id=storage_id), manifest_key=manifest_key)[0]
+        objs = cls.objects.filter(storage_info=StorageInfo.objects.get(id=storage_id), manifest_key=manifest_key)
+        if len(objs) > 0:
+            return objs[0]
+        raise CURReport.DoesNotExist
 
 
     @classmethod
