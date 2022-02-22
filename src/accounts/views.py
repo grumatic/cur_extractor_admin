@@ -184,4 +184,4 @@ def create_storage_info(request):
 def cur_hardcoded(request):
 
     tasks.run()
-    return redirect(request.META['HTTP_REFERER'])
+    return redirect('storage_info')

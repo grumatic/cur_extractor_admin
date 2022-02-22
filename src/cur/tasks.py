@@ -109,8 +109,11 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
 
         output_folder = f"{downloaded_path[:downloaded_path.rfind('/')+1]}{report_info.id}/"
         output_folder = s3_downloader.make_temp_dir(output_folder)
-        new_key = f"{configure.DEFAULT_PREFIX}&&{downloaded_path.split('&&')[-2]}&&{downloaded_path.split('&&')[-1]}"
-        upload_path = f"{output_folder}{new_key}"
+        path_key = f"{configure.DEFAULT_PREFIX}&&{downloaded_path.split('&&')[-2]}&&{downloaded_path.split('&&')[-1]}"
+        new_key = f"{report['manifest_key'][:report['manifest_key'].rfind('/')]}"
+        new_key = f"{new_key}/{downloaded_path.split('&&')[-1]}"
+
+        upload_path = f"{output_folder}{path_key}"
         
         extract_data(downloaded_path, upload_path, report_info, account_ids)
 
@@ -120,7 +123,7 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
                             bucket_name= report_info.bucket_name
                         )
 
-        s3_uploader.upload_CUR_data(file_path=upload_path)
+        s3_uploader.upload_CUR_data(file_path=upload_path, key=new_key)
 
 
         cur_track = CURReport.get_by_report_and_key(

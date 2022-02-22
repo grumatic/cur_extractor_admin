@@ -109,14 +109,12 @@ class S3HandlerClass(object):
 
         return download_file_path
 
-    def upload_CUR_data(self, file_path):
+    def upload_CUR_data(self, file_path, key):
         """
         Upload CUR data to S3
         """
         try:
-            object_key = file_path[file_path.rfind('/')+1:]
-            object_key = object_key.replace('&&', '/')
-            self.bucket.upload_file(Filename=file_path, Key=object_key)
+            self.bucket.upload_file(Filename=file_path, Key=key)
         except Exception as e:
             logger.error(f'Error during upload CUR data to S3 - {e} - {file_path}')
             raise Exception from e
