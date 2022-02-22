@@ -52,7 +52,7 @@ def get_changed_reports(s3_downloader: S3HandlerClass, prefix=""):
     objects = s3_downloader.get_objects_list(prefix= prefix)
     changed_reports = []
     for obj in objects:
-        if obj.key.endswith("Manifest.json"): # and needs_update(obj,s3_downloader.storage_id):
+        if obj.key.endswith("Manifest.json") and needs_update(obj,s3_downloader.storage_id):
             body = s3_downloader.get_object_as_json(key=obj.key)
 
             changed_reports.append(
