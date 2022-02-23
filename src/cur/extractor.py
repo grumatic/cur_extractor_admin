@@ -71,9 +71,9 @@ def extract_chunk(chunk, report_info, account_ids):
         if 'lineItem/UnblendedCost' in columns:
             chunk['lineItem/BlendedCost'] = chunk['lineItem/UnblendedCost']
         if 'lineItem/NetUnblendedRate' in columns:
-            chunk['lineItem/NetBlendedRate'] = chunk['lineItem/NetUnblendedRate']
+            chunk['lineItem/NetBlendedRate'] = 0
         if 'lineItem/NetUnblendedCost' in columns:
-            chunk['lineItem/NetBlendedCost'] = chunk['lineItem/NetUnblendedCost']
+            chunk['lineItem/NetBlendedCost'] = 0
 
     return chunk
 

@@ -165,8 +165,6 @@ def create_report_info(request):
 
 @login_required(login_url='/login/')
 def create_storage_info(request):
-    # if not request.session.get('user_id', None):
-    #     return redirect('login')
     form = StorageInfoForm()
     if request.method == 'POST':
         form = StorageInfoForm(request.POST)
