@@ -37,5 +37,23 @@ class CURReport(models.Model):
         except CURReport.DoesNotExist as e:
             return None
 
+    @classmethod
+    def view_objects(cls, *args, **kwargs):
+        cls.verify_and_clean()
+        return cls.objects.filter(**kwargs)
+
+    @classmethod
+    def verify_and_clean(cls):
+        """
+        Verify that the foreign key(s) in the document has been deleted.
+        """
+
+        for cur_report in cls.objects.all():
+            try:
+                cur_report.storage_info.id
+                cur_report.report_info.id
+            except:
+                cur_report.delete()
+
     def is_report_changed(self, last_updated):
         return self.last_updated != last_updated

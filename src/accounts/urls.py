@@ -31,6 +31,8 @@ urlpatterns = [
     path('create-storage-info/', views.create_storage_info, name='create_storage-info'),
 
     # # CUR
-    path('cur/start_hardcoded/', views.cur_hardcoded, name="cur_hardcoded")
+    path('cur/start_hardcoded/', views.cur_hardcoded, name="cur_hardcoded"),
+    path('cur/start_task/', views.cur_task, name="cur_task"),
+    # path('cur/start_models/', views.cur_models, name="cur_models")
 
 ]

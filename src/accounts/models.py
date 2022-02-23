@@ -1,9 +1,12 @@
+import logging
 from pprint import pprint
 
 from django.db import models
 
 from accounts.utils import accept_exactly_one
 
+logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
+logger = logging.getLogger(__name__)
 
 class StorageInfo(models.Model):
     name = models.CharField(max_length=63)
@@ -40,6 +43,25 @@ class PayerAccount(models.Model):
     def get_by_storage_info(cls, storage_info):
         return cls.objects.filter(storage_info=storage_info)
 
+
+    @classmethod
+    def view_objects(cls, *args, **kwargs):
+        cls.verify_and_clean()
+        return cls.objects.filter(**kwargs)
+
+    @classmethod
+    def verify_and_clean(cls):
+        """
+        Verify that the foreign key(s) in the document has been deleted.
+        """
+
+        for payer in cls.objects.all():
+            try:
+                payer.storage_info.id
+            except Exception as e:
+                logger.info(e)
+                payer.delete()
+
 class LinkedAccount(models.Model):
     account_id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=256)
@@ -56,6 +78,26 @@ class LinkedAccount(models.Model):
     @classmethod
     def get_by_report_info(cls, report_info):
         return cls.objects.filter(reportinfo=report_info)
+
+
+    @classmethod
+    def view_objects(cls, *args, **kwargs):
+        cls.verify_and_clean()
+        return cls.objects.filter(**kwargs)
+
+    @classmethod
+    def verify_and_clean(cls):
+        """
+        Verify that the foreign key(s) in the document has been deleted.
+        """
+
+        for linked in cls.objects.all():
+            try:
+                linked.payer.account_id
+            except Exception as e:
+                logger.info(e)
+                linked.delete()
+
 
 class ReportInfo(models.Model):
     name = models.CharField(max_length=32)
@@ -83,3 +125,23 @@ class ReportInfo(models.Model):
     @property
     def list_acounts(self):
         return LinkedAccount.get_by_report_info(self.id)
+
+    @classmethod
+    def view_objects(cls, *args, **kwargs):
+        cls.verify_and_clean()
+        return cls.objects.filter(**kwargs)
+
+    @classmethod
+    def verify_and_clean(cls):
+        """
+        Verify that the foreign key(s) in the document has been deleted.
+        """
+
+        for report in cls.objects.all():
+            try:
+                report.payer.account_id
+                for account in report.list_acounts:
+                    account.account_id
+            except Exception as e:
+                logger.info(e)
+                report.delete()

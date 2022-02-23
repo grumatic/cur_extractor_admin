@@ -25,7 +25,7 @@ from cur import tasks
 @login_required(login_url='/login/')
 def view_updates(request, cur_update_id: int=None):
     query = {'id': cur_update_id} if cur_update_id else {}
-    reports = CURReport.objects.filter(**query).order_by('-last_updated')[:100]
+    reports = CURReport.view_objects(**query).order_by('-last_updated')[:100]
 
     context = {
         'cur_updates': reports
@@ -35,7 +35,7 @@ def view_updates(request, cur_update_id: int=None):
 @login_required(login_url='/login/')
 def view_by_report(request, report_info_id: int=None):
     query = {'report_info__id': report_info_id} if report_info_id else {}
-    reports = CURReport.objects.filter(**query).order_by('-last_updated')[:100]
+    reports = CURReport.view_objects(**query).order_by('-last_updated')[:100]
 
     context = {
         'cur_updates': reports
@@ -45,7 +45,7 @@ def view_by_report(request, report_info_id: int=None):
 
 @login_required(login_url='/login/')
 def download_updates(request):
-    reports = CURReport.objects.all().order_by('last_updated')
+    reports = CURReport.view_objects().order_by('last_updated')
 
     response = HttpResponse(
         content_type='text/csv',

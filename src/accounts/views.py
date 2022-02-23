@@ -44,7 +44,7 @@ def logout_view(request):
 @login_required(login_url='/login/')
 def linked_account_view(request, linked_account_id: int= None):
     query = {'linked_account_id': linked_account_id} if linked_account_id else {}
-    linked_accounts = LinkedAccount.objects.filter(**query)
+    linked_accounts = LinkedAccount.view_objects(**query)
     context = {
         'linked_accounts': linked_accounts
         }
@@ -54,7 +54,7 @@ def linked_account_view(request, linked_account_id: int= None):
 @login_required(login_url='/login/')
 def payer_account_view(request, payer_id: int=None):
     query = {'id': payer_id} if payer_id else {}
-    comps = PayerAccount.objects.filter(**query)
+    comps = PayerAccount.view_objects(**query)
 
     context = {
         'payer_accounts': comps
@@ -65,7 +65,7 @@ def payer_account_view(request, payer_id: int=None):
 @login_required(login_url='/login/')
 def report_info_view(request, report_info_id: int=None):
     query = {'id': report_info_id} if report_info_id else {}
-    report_infos = ReportInfo.objects.filter(**query)
+    report_infos = ReportInfo.view_objects(**query)
 
     context = {
         'report_infos': report_infos
@@ -180,6 +180,55 @@ def create_storage_info(request):
 
 
 def cur_hardcoded(request):
-
+    
     tasks.run()
+    return redirect('storage_info')
+
+def cur_task(request):
+    
+    tasks.run.delay()
+    return redirect('storage_info')
+
+def cur_models(request):
+
+    if len(StorageInfo.objects.all()) <1:
+        print("StorageInfo")
+        StorageInfo(
+            name= "test_storage_name",
+            bucket_name= "grumatic-dev",
+            prefix= "grumatic-cur",
+            arn= "arn:aws:iam::328341376253:role/cur-pandas-read-role"
+        ).save()
+    if len(PayerAccount.objects.all()) <1:
+        print("PayerAccount")
+        PayerAccount(
+            account_id= 328341376253,
+            name= "test_payer_name",
+            storage_info=StorageInfo.objects.all().first()
+        ).save()
+    if len(LinkedAccount.objects.all()) <1:
+        print("LinkedAccount")
+        LinkedAccount(
+            account_id= 328341376253,
+            name= "test_linked_name",
+            payer=PayerAccount.objects.get(account_id=328341376253)
+        ).save()
+    print(len(ReportInfo.objects.all()))
+    if len(ReportInfo.objects.all()) <1:
+        print("ReportInfo")
+        rep = ReportInfo(
+            name = "test_report_name",
+            payer = PayerAccount.objects.get(account_id=328341376253),
+            arn = "arn:aws:iam::020335907490:role/cur-writer-role",
+            bucket_name = "output-cc-cur",
+            credit = True,
+            refund = True,
+            tax = True,
+            discount = True,
+            blended = True
+        )
+        rep.save()
+        rep.accounts.set(LinkedAccount.objects.filter(account_id= 328341376253))
+        
+
     return redirect('storage_info')
