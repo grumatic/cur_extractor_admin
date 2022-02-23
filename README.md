@@ -88,7 +88,7 @@ Note that the updates are stored per Original CUR (different date CUR will be tr
 |UI Field|Affected CUR Columns|Action|
 |--------|--------------------|------|
 |Discount|`discount/RIVolumeDiscount` `discount/EDPDiscount` `discount/TotalDiscount` `discount/SPPDiscount`|Value of the column will be changed to 0 if it exists|
-|Blended|`lineItem/BlendedRate` `lineItem/BlendedCost` `lineItem/NetBlendedRate` `lineItem/NetBlendedCost`|The blended value will be changed to match the corresponding unbleded value|
+|Blended|`lineItem/BlendedRate` `lineItem/BlendedCost`|The blended value will be changed to match the corresponding unbleded value|
 |Blended|`lineItem/NetBlendedRate` `lineItem/NetBlendedCost`|If the column exists, the value will be set to 0.|
 
 
