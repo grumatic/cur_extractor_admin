@@ -5,7 +5,6 @@ from pprint import pprint
 import sys
 import traceback
 
-import pandas as pd
 
 from cur_extractor.celery import app
 
@@ -18,10 +17,10 @@ from accounts.models import (LinkedAccount,
 
 from cur_extractor.Config import Config as configure
 from cur.s3_handler import S3HandlerClass
-from cur.extractor import (extract_chunk)
+from cur.extractor import (extract_chunk, extract_data)
 from cur.models import CURReport
 
-# logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
+logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
 
@@ -54,12 +53,11 @@ def get_changed_reports(s3_downloader: S3HandlerClass, prefix=""):
     for obj in objects:
         if obj.key.endswith("Manifest.json") and needs_update(obj,s3_downloader.storage_id):
             body = s3_downloader.get_object_as_json(key=obj.key)
-
             changed_reports.append(
                     {
                         "manifest_key": obj.key,
                         "report_keys": body["reportKeys"],
-                        "last_updated": obj.last_modified,
+                        "last_updated": obj.last_modified
                     }
                 )
     return changed_reports
@@ -84,26 +82,13 @@ def get_report_infos(storage_info):
     payers = PayerAccount.get_by_storage_info(storage_info)
     return ReportInfo.objects.filter(payer__in=list(payers))
 
-def extract_data(input_file, output_file, report_info, account_ids):
-    """
-    Extract the datat from the input_file and write it to the output_file.
-    """
-    header = True
-    for chunk in pd.read_csv(input_file, chunksize=configure.CHUNK_SIZE):
-        chunk = extract_chunk(chunk, report_info, account_ids)
-        chunk.to_csv(output_file,
-                    header=header,
-                    compression='gzip',
-                    mode='w' if header else 'a',
-                    index=False)
-        header = False
-
 
 def update_report(downloaded_path, report_infos, s3_downloader, report, storage_info):
     """
     Iterate through the report_infos, extract data updating.
     """
     for report_info in report_infos:
+        logger.info(f"Updating {report['manifest_key']} with report Output CUR Info '{report_info.name}'")
         accounts = LinkedAccount.get_by_report_info(report_info)
         account_ids = [account.account_id for account in accounts]
 
@@ -115,8 +100,10 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
 
         upload_path = f"{output_folder}{path_key}"
         
-        extract_data(downloaded_path, upload_path, report_info, account_ids)
+        is_extracted = extract_data(downloaded_path, upload_path, report_info, account_ids)
 
+        if not is_extracted:
+            continue
         s3_uploader = S3HandlerClass(
                             arn=report_info.arn,
                             storage_id= report_info.id,
@@ -154,13 +141,20 @@ def run():
             storage_id= storage_info.id,
             bucket_name= storage_info.bucket_name
         )
+
+        logger.info("Checking report changes in Original CUR Info '{storage_info.name}'")
         # Get changed reports
         changed_reports = get_changed_reports(
             s3_downloader= s3_downloader,
             prefix= storage_info.prefix
         )
-        
+
         report_infos = get_report_infos(storage_info)
+        logger.info(
+            f"Reports to be updated from original CUR Info '{storage_info.name}': \
+{[report['manifest_key'] for report in changed_reports]}"
+        )
+
         for report in changed_reports:
             # Download Changed Files
             downloaded_paths = []
@@ -183,5 +177,5 @@ def run():
 
         # Delete the temp folder
         if configure.NEED_REMOVE_TEMP:
-            # logger.info('Remove temp folder')
+            logger.info(f"Remove temp folder for original CUR Info '{storage_info.name}'")
             s3_downloader.remove_download_temp_dir()

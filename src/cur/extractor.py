@@ -8,7 +8,7 @@ from cur_extractor.Config import Config as configure
 
 import pandas as pd
 
-# logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
+logging.config.fileConfig(fname='cur_extractor/Config/logger.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
 
@@ -31,7 +31,7 @@ def extract_chunk(chunk, report_info, account_ids):
     Extract data from a dataframe chunk, according to the report.
     """
     if account_ids:
-        chunk = chunk.loc[chunk['bill/PayerAccountId'].isin(account_ids)]
+        chunk = chunk.loc[chunk['lineItem/UsageAccountId'].isin(account_ids)]
     line_item_type = []
     columns = chunk.columns
 
@@ -77,6 +77,25 @@ def extract_chunk(chunk, report_info, account_ids):
 
     return chunk
 
+
+def extract_data(input_file, output_file, report_info, account_ids):
+    """
+    Extract the datat from the input_file and write it to the output_file.
+    """
+    header = True
+    try:
+        for chunk in pd.read_csv(input_file, chunksize=configure.CHUNK_SIZE):
+            chunk = extract_chunk(chunk, report_info, account_ids)
+            chunk.to_csv(output_file,
+                        header=header,
+                        compression='gzip',
+                        mode='w' if header else 'a',
+                        index=False)
+            header = False
+    except pd.errors.EmptyDataError as e:
+        logger.error(f"pandas could not read {input_file}")
+        
+    return not header
 
 
 def make_tmp_folder_to_extract_result(temp_path):

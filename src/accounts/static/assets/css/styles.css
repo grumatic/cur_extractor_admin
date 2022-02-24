@@ -275,3 +275,6 @@ th,td {
 .container .content .download a {
     padding: 10px;
 }
+.container .content #id_accounts {
+    margin-left: 50px;
+}
