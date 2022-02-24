@@ -100,6 +100,8 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
 
         upload_path = f"{output_folder}{path_key}"
         
+
+        logger.info(f"Extracting data for Output CUR Info '{report_info.name}' [Target-{new_key}]")
         is_extracted = extract_data(downloaded_path, upload_path, report_info, account_ids)
 
         if not is_extracted:
@@ -110,6 +112,7 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
                             bucket_name= report_info.bucket_name
                         )
 
+        logger.info(f"Uploading {new_key}")
         s3_uploader.upload_CUR_data(file_path=upload_path, key=new_key)
 
 
@@ -128,7 +131,6 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
             )
         cur_track.save()
 
-
 @app.task
 def run():
     """
@@ -142,7 +144,7 @@ def run():
             bucket_name= storage_info.bucket_name
         )
 
-        logger.info("Checking report changes in Original CUR Info '{storage_info.name}'")
+        logger.info(f"Checking report changes in Original CUR Info '{storage_info.name}'")
         # Get changed reports
         changed_reports = get_changed_reports(
             s3_downloader= s3_downloader,
@@ -158,6 +160,7 @@ def run():
         for report in changed_reports:
             # Download Changed Files
             downloaded_paths = []
+            logger.info("Downloading objects from report...")
             downloaded_paths += download_keys(
                 keys=report["report_keys"],
                 s3_downloader=s3_downloader
