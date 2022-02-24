@@ -278,3 +278,7 @@ th,td {
 .container .content #id_accounts {
     margin-left: 50px;
 }
+.container .content .note {
+    margin-top: 50px;
+}
+

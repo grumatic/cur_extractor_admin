@@ -11,5 +11,8 @@
         {{ form }}
         <input class="submit-btn" type="submit" value="Create">
     </form>
+    {% if title == "Output CUR Info" %}
+    <p class="note">* If no account is selected, all accounts will be included in the output.</p>
+    {% endif %}
 </div>
 {% endblock %}

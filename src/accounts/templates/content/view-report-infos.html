@@ -16,6 +16,11 @@
                 <th>Bucket Name</th>
                 <th>Payer Account</th>
                 <th>Linked Accounts</th>
+                <th>Credit</th>
+                <th>Refund</th>
+                <th>Tax</th>
+                <th>Discount</th>
+                <th>Blended</th>
             </tr>
             
 
@@ -33,6 +38,40 @@
                         <p>{{linked_account.account_id}}</p>
                     {% endfor %}
 
+                </td>
+                <td>
+                    {% if report_info.credit %}
+                    Included
+                    {% else %}
+                    Not Included
+                    {% endif %}
+                <td>
+                    {% if report_info.refund %}
+                    Included
+                    {% else %}
+                    Not Included
+                    {% endif %}
+                </td>
+                <td>
+                    {% if report_info.tax %}
+                    Included
+                    {% else %}
+                    Not Included
+                    {% endif %}
+                </td>
+                <td>
+                    {% if report_info.discount %}
+                    Included
+                    {% else %}
+                    Not Included
+                    {% endif %}
+                </td>
+                <td>
+                    {% if report_info.blended %}
+                    Included
+                    {% else %}
+                    Not Included
+                    {% endif %}
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger" href="/delete-report-info/{{report_info.id}}/">
