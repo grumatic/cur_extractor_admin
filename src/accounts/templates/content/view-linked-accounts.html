@@ -11,6 +11,7 @@
         </div>
         <table>
             <tr>
+                <th>Linked Account Name</th>
                 <th>Linked Account ID</th>
                 <th>Payer Account ID</th>
             </tr>
@@ -19,17 +20,10 @@
             {% for linked_account in linked_accounts %}
 
             <tr>
+                <td>{{linked_account.name}}</td>
                 <td>{{linked_account.account_id}}</td>
                 <td>
                     <a href="{% url 'view_company' %}">{{linked_account.payer.account_id}}</a>
-                </td>
-                <td>
-
-                    {% for account in PayerAccount.accounts %}
-                    <li>
-                        <ul><a href="{% url 'view_account' %}">{{linked_account.account_id}}</a></ul>
-                    </li>
-                    {% endfor %}
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger" href="/delete-linked-account/{{linked_account.account_id}}/">
