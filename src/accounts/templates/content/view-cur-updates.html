@@ -5,131 +5,136 @@
 
 {% block content %}
 <div class="content">
-    <div class="title">
-            <h2>Past CUR extractions</h2>                
-    </div>
-    <div class="details">
-        <a href="{% url 'download-cur_updates' %}">
-            <div class="download button-r">
-                Download All
-                <img src="{% static '/assets/svg/download.svg' %}"/>
-            </div>
-        </a> 
-        <div class="table-border">
-            <table>
-                <tr>
-                    <th>
-                        <div class="header_no">
-                            No.
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header_id">
-                            ID
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header_update">
-                            Last Updated
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header_storage">
-                            Storage
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header_report">
-                            Report
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header_manifest">
-                            Manifest Key
-                        </div>
-                    </th>
-                </tr>
-
-                {% for cur_update in cur_updates %}
-                <tr>
-                    <td>
-                        <div class="cell">
-                            <div class="center">
-                                {{cur_update.id}}
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="cell">
-                            <div class="center">
-                                {{cur_update.id}}
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="cell">
-                            <div class="center">
-                                {{cur_update.last_updated}}</td>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="cell">
-                            <div class="center">
-                                {{cur_update.storage_info}}
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="cell">
-                                <div class="center">
-                                    <a href="{% url 'view-cur_updates_by_report' cur_update.report_info.id 1 %}">
-                                        {{cur_update.report_info}}
-                                    </a>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="cell">
-                            <div class="center">
-                                {{cur_update.date_str}}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+    <div class="view">
+        <div class="title">
+                <h2>Past CUR extractions</h2>                
         </div>
-        <div class="pagination">
-                {% if report_id  %}
-                <a href="{% url current_url report_info_id=report_id page=previous %}">
-                {% else %}
-                <a href="{% url 'view-cur_updates' page=previous %}">
-                {% endif %}
-                    <img src="{% static '/assets/svg/left-arrow.svg' %}"/>
-                </a>
-
-                {% for page in pages %}
-                <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
-                    <div class="center">
-                        {% if report_id  %}
-                        <a href="{% url current_url report_id page %}">
-                        {% else %}
-                        <a href="{% url 'view-cur_updates' page %}">
-                        {% endif %}
-                            {{ page }}
-                        </a>
+        <div class="details">
+            <div class="download-button">
+                <a href="{% url 'download-cur_updates' %}">
+                    <div class="download button-r">
+                        Download All
+                        <img src="{% static '/assets/svg/download.svg' %}"/>
                     </div>
-                </div>
-                {% endfor %}
-                
-                {% if report_id  %}
-                <a href="{% url current_url report_info_id=report_id page=next %}">
-                {% else %}
-                <a href="{% url 'view-cur_updates' page=next %}">
-                {% endif %}
-                    <img src="{% static '/assets/svg/right-arrow.svg' %}"/>
-                </a>
+                </a> 
+            </div>
+            
+            <div class="table-border">
+                <table>
+                    <tr>
+                        <th>
+                            <div class="header_no">
+                                No.
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_id">
+                                ID
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_update">
+                                Last Updated
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_storage">
+                                Storage
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_report">
+                                Report
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_manifest">
+                                Manifest Key
+                            </div>
+                        </th>
+                    </tr>
+
+                    {% for cur_update in cur_updates %}
+                    <tr>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{cur_update.id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{cur_update.id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{cur_update.last_updated}}</td>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{cur_update.storage_info}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                    <div class="center">
+                                        <a href="{% url 'view-cur_updates_by_report' cur_update.report_info.id 1 %}">
+                                            {{cur_update.report_info}}
+                                        </a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{cur_update.date_str}}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="pagination">
+                    {% if report_id  %}
+                    <a href="{% url current_url report_info_id=report_id page=previous %}">
+                    {% else %}
+                    <a href="{% url 'view-cur_updates' page=previous %}">
+                    {% endif %}
+                        <img src="{% static '/assets/svg/left-arrow.svg' %}"/>
+                    </a>
+
+                    {% for page in pages %}
+                    <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
+                        <div class="center">
+                            {% if report_id  %}
+                            <a href="{% url current_url report_id page %}">
+                            {% else %}
+                            <a href="{% url 'view-cur_updates' page %}">
+                            {% endif %}
+                                {{ page }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    {% if report_id  %}
+                    <a href="{% url current_url report_info_id=report_id page=next %}">
+                    {% else %}
+                    <a href="{% url 'view-cur_updates' page=next %}">
+                    {% endif %}
+                        <img src="{% static '/assets/svg/right-arrow.svg' %}"/>
+                    </a>
+            </div>
         </div>
     </div>
 </div>
