@@ -52,43 +52,33 @@
                     <tr>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{payer_account.account_id}}
-                                </div>
+                                {{payer_account.account_id}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{payer_account.account_id}}
-                                </div>
+                                {{payer_account.account_id}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{payer_account.name}}
-                                </div>
+                                {{payer_account.name}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {% for linked_account in payer_account.accounts %}
-                                    <li>
-                                        <ul><a href="{% url 'view_account' payer_account.account_id %}">{{linked_account.account_id}}</a></ul>
-                                    </li>
-                                    {% endfor %}
-                                </div>
+                                {% for linked_account in payer_account.accounts %}
+                                <li>
+                                    <ul><a href="{% url 'view_account' payer_account.account_id %}">{{linked_account.account_id}}</a></ul>
+                                </li>
+                                {% endfor %}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    <a href="/delete-payer-account/{{payer_account.account_id}}/">
-                                        <img src="{% static '/assets/svg/trash.svg' %}"/>
-                                    </a>
-                                </div>
+                                <a href="/delete-payer-account/{{payer_account.account_id}}/">
+                                    <img src="{% static '/assets/svg/trash.svg' %}"/>
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -102,11 +92,9 @@
 
                 {% for page in pages %}
                 <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
-                    <div class="center">
-                        <a href="{% url 'view_company' page=previous %}">
-                            {{ page }}
-                        </a>
-                    </div>
+                    <a href="{% url 'view_company' page=page %}">
+                        {{ page }}
+                    </a>
                 </div>
                 {% endfor %}
                 

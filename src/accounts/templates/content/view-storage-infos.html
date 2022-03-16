@@ -54,39 +54,29 @@
                     <tr>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{storage_info.id}}
-                                </div>
+                                {{storage_info.id}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{storage_info.id}}
-                                </div>
+                                {{storage_info.id}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{storage_info.bucket_name}}
-                                </div>
+                                {{storage_info.bucket_name}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{storage_info.prefix}}
-                                </div>
+                                {{storage_info.prefix}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    <a href="/delete-storage-info/{{storage_info.id}}/">
-                                        <img src="{% static '/assets/svg/trash.svg' %}"/>
-                                    </a>
-                                </div>
+                                <a href="/delete-storage-info/{{storage_info.id}}/">
+                                    <img src="{% static '/assets/svg/trash.svg' %}"/>
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -99,12 +89,17 @@
                 </a>
 
                 {% for page in pages %}
+
+
                 <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
-                    <div class="center">
-                        <a href="{% url 'view_storage-info' page=previous %}">
-                            {{ page }}
-                        </a>
-                    </div>
+
+                    {% if page == '...'%}
+                    <p>{{ page }}</p>
+                    {% else %}
+                    <a href="{% url 'view_storage-info' page=page %}">
+                        {{ page }}
+                    </a>
+                    {% endif %}
                 </div>
                 {% endfor %}
                 

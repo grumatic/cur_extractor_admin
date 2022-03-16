@@ -482,81 +482,6 @@ End CUSTOM SELECT
 
 
 
-/* The container must be positioned relative: */
-
-
-/* .custom-select::after {
-    content: "";
-    margin-right: 23px;
-    margin-left: auto !important;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0.4em 0.4em 0 0.4em;
-    border-color: #999 transparent transparent transparent;
-    margin-left: 0.4em;
-    vertical-align: 0.1em;
-
-} */
-
-/* .custom-select select {
-    display: none;
-
-}
-
-.select-selected {
-    height: 100%;
-    width:100%;
-} */
-
-/* Style the arrow inside the select element: */
-/* .select-selected:after {
-    position: absolute;
-    content: "";
-    top: 14px;
-    right: 10px;
-    margin-left: auto;
-} */
-
-/* Point the arrow upwards when the select box is open (active): */
-/* .select-selected.select-arrow-active:after {
-    border-color: transparent transparent #fff transparent;
-    top: 7px;
-} */
-
-/* style the items (options), including the selected item: */
-/* .select-items div,.select-selected {
-    color: #737480;
-    padding: 8px 16px;
-    cursor: pointer;
-} */
-
-/* Style items (options): */
-/* .select-items {
-    position: absolute;
-    
-    top: 100%;
-    left: 0;
-    right: 0;
-    margin-top: 15px;
-    background-color: #FFFFFF;
-
-    border-radius: 5px;
-    border: 1px solid #cccccc;
-
-    z-index: 99;
-}
-
-.select-hide {
-    display: none;
-}
-
-.select-items div:hover, .same-as-selected {
-    background-color: rgba(0, 0, 0, 0.1);
-} */
-
-
-
 .download-button a {
 
     justify-content: center;
@@ -669,6 +594,9 @@ button:hover.button-r{
 }
 .content .details table td .cell {
     position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     margin: 0;
     text-align: left;
     padding-left: 16px;
@@ -676,6 +604,12 @@ button:hover.button-r{
     border-bottom: 1px solid #F0F0F7;
     border-spacing:0;
     border-collapse: collapse;
+
+    overflow-wrap: break-word;
+    
+}
+.content .details table td .cell p {
+    padding-left: 10px;
 }
 
 .content .details .pagination {
@@ -683,6 +617,7 @@ button:hover.button-r{
     margin: 48px auto 0px auto;
 
     display:flex; 
+    align-items: center;
     justify-content: center;
     text-align: center;
 }
@@ -697,9 +632,9 @@ button:hover.button-r{
     width: 33px;
     height: 33px;
 
-
+    margin: 0 12px;
     color: #737480;
-
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -708,7 +643,6 @@ button:hover.button-r{
 .content .details .pagination .page_number.selected {
     background-color: #F0F0F7;
     border-radius: 16px;
-
 }
 
 

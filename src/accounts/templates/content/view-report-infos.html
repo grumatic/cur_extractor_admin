@@ -87,111 +87,87 @@
                     <tr>
                         <td>
                             <div class="cell">
-                                <div class="center">
                                     {{report_info.id}}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
                                     {{report_info.id}}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
                                     {{report_info.name}}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                            {{report_info.bucket_name}}
-                        </div>
-                    </div>
-                        </td>
-                        <td>
-                            <div class="cell">
-                                <div class="center">
-                                    {{report_info.payer.account_id}}
-                                </div>
+                                {{report_info.bucket_name}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {% for linked_account in report_info.list_acounts %}
-                                        <p>
-                                            {{linked_account.account_id}}
-                                        </p>
-                                    {% endfor %}
-                                </div>
+                                {{report_info.payer.account_id}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {% if report_info.credit %}
-                                    Included
-                                    {% else %}
-                                    Not Included
-                                    {% endif %}
-                                </div>
-                            </div>
-                        <td>
-                            <div class="cell">
-                                <div class="center">
-                                    {% if report_info.refund %}
-                                    Included
-                                    {% else %}
-                                    Not Included
-                                    {% endif %}
-                                </div>
+                                {% for linked_account in report_info.list_acounts %}
+                                    <p>
+                                        {{linked_account.account_id}}
+                                    </p>
+                                {% endfor %}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
+                                {% if report_info.credit %}
+                                Included
+                                {% else %}
+                                Not Included
+                                {% endif %}
+                            </div>
+                        <td>
+                            <div class="cell">
+                                {% if report_info.refund %}
+                                Included
+                                {% else %}
+                                Not Included
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
                                     {% if report_info.tax %}
                                     Included
                                     {% else %}
                                     Not Included
                                     {% endif %}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
                                     {% if report_info.discount %}
                                     Included
                                     {% else %}
                                     Not Included
                                     {% endif %}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
                                     {% if report_info.blended %}
                                     Included
                                     {% else %}
                                     Not Included
                                     {% endif %}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
                                     <a class="btn btn-sm btn-danger" href="/delete-report-info/{{report_info.id}}/">
                                         <img src="{% static '/assets/svg/trash.svg' %}"/>
                                     </a>
-                                </div>
                             </div>
                         </td>
                     </tr>
@@ -205,11 +181,9 @@
 
                     {% for page in pages %}
                     <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
-                        <div class="center">
-                            <a href="{% url 'view_report-info' page=previous %}">
-                                {{ page }}
-                            </a>
-                        </div>
+                        <a href="{% url 'view_report-info' page=page %}">
+                            {{ page }}
+                        </a>
                     </div>
                     {% endfor %}
                     

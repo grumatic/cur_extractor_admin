@@ -54,39 +54,29 @@
                     <tr>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{linked_account.name}}
-                                </div>
+                                {{linked_account.name}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{linked_account.name}}
-                                </div>
+                                {{linked_account.name}}
                             </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    {{linked_account.account_id}}
-                                </div>
+                                {{linked_account.account_id}}
                             </div>
                         </td>
                         <td>
-                            <div class="cell">
-                                <div class="center">
-                                    <a href="{% url 'view_company' %}">{{linked_account.payer.account_id}}</a>
-                                </div>
-                            </div>
+                        <div class="cell">
+                            <a href="{% url 'view_company' %}">{{linked_account.payer.account_id}}</a>
+                        </div>
                         </td>
                         <td>
                             <div class="cell">
-                                <div class="center">
-                                    <a href="/delete-linked-account/{{linked_account.account_id}}/">
-                                        <img src="{% static '/assets/svg/trash.svg' %}"/>
-                                    </a>
-                                </div>
+                                <a href="/delete-linked-account/{{linked_account.account_id}}/">
+                                    <img src="{% static '/assets/svg/trash.svg' %}"/>
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -100,11 +90,9 @@
 
                 {% for page in pages %}
                 <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
-                    <div class="center">
-                        <a href="{% url 'view_account' page=previous %}">
-                            {{ page }}
-                        </a>
-                    </div>
+                    <a href="{% url 'view_account' page=page %}">
+                        {{ page }}
+                    </a>
                 </div>
                 {% endfor %}
                 

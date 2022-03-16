@@ -24,6 +24,21 @@ from cur import tasks
 
 from cur_extractor.Config import Config as configure
 
+
+def get_transformed_range(paginator):
+    result = []
+
+    page_range = list(paginator.page_range)
+
+    if len(page_range) > 7:
+        result = page_range[:3]
+        result.append('...')
+        result += page_range[len(page_range)-3:]
+    else:
+        result = page_range
+    return result
+
+
 def login_view(request):
     if request.method == 'POST':
         user = authenticate(
@@ -57,7 +72,7 @@ def storage_info_view(request, page: int=None):
             form.save()
         return redirect('/storage-info')
 
-    page_range = list(paginator.page_range)
+    page_range = get_transformed_range(paginator)
     context = {
         'selected': page,
         'previous': max(page - 1, 1),
@@ -85,7 +100,7 @@ def payer_account_view(request, page: int=None):
             form.save()
         return redirect('/payer-account')
 
-    page_range = list(paginator.page_range)
+    page_range = get_transformed_range(paginator)
     context = {
         'selected': page,
         'previous': max(page - 1, 1),
@@ -112,7 +127,7 @@ def linked_account_view(request, page: int= None):
             form.save()
         return redirect('/account')
 
-    page_range = list(paginator.page_range)
+    page_range = get_transformed_range(paginator)
     context = {
         'selected': page,
         'previous': max(page - 1, 1),
@@ -139,7 +154,7 @@ def report_info_view(request, page: int=None):
             form.save()
         return redirect('/report-info')
 
-    page_range = list(paginator.page_range)
+    page_range = get_transformed_range(paginator)
     context = {
         'selected': page,
         'previous': max(page - 1, 1),
