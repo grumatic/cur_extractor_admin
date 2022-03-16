@@ -42,10 +42,10 @@ urlpatterns = [
     ################
     #### Create ####
     ################
-    path('create-linked-account/', views.create_account, name='create_account'),
-    path('create-payer-account/', views.create_company, name='create_company'),
-    path('create-report-info/', views.create_report_info, name='create_report-info'),
-    path('create-storage-info/', views.create_storage_info, name='create_storage-info'),
+    # path('create-linked-account/', views.create_account, name='create_account'),
+    # path('create-payer-account/', views.create_company, name='create_company'),
+    # path('create-report-info/', views.create_report_info, name='create_report-info'),
+    # path('create-storage-info/', views.create_storage_info, name='create_storage-info'),
 
     # # CUR
     path('cur/start_hardcoded/', views.cur_hardcoded, name="cur_hardcoded"),

@@ -55,7 +55,7 @@ def storage_info_view(request, page: int=None):
         form = StorageInfoForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('/create-storage-info')
+        return redirect('/storage-info')
 
     page_range = list(paginator.page_range)
     context = {
@@ -83,7 +83,7 @@ def payer_account_view(request, page: int=None):
         form = CompanyForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('/create-storage-info')
+        return redirect('/payer-account')
 
     page_range = list(paginator.page_range)
     context = {
@@ -110,7 +110,7 @@ def linked_account_view(request, page: int= None):
         form = AccountForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('/create-storage-info')
+        return redirect('/account')
 
     page_range = list(paginator.page_range)
     context = {
@@ -137,7 +137,7 @@ def report_info_view(request, page: int=None):
         form = ReportInfoForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('/create-storage-info')
+        return redirect('/report-info')
 
     page_range = list(paginator.page_range)
     context = {
@@ -182,72 +182,12 @@ def delete_report_info(request, report_info_id: int):
     return redirect('/report-info/')
 
 
-
-
 ################################################################
-########################  Create Views  ########################
+#########################  Hardcoded  ##########################
 ################################################################
 
-@login_required(login_url='/login/')
-def create_account(request):
-    form = AccountForm(request.POST)
-    if request.method == 'POST':
-        form = AccountForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('/create-linked-account/')
 
-    context = {
-        'title': "Linked Account Info",
-        'form': form.as_p
-        }
-    return render(request, 'content/create-form.html', context)
 
-@login_required(login_url='/login/')
-def create_company(request):
-    form = CompanyForm()
-    if request.method == 'POST':
-        form = CompanyForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('/create-payer-account')
-
-    context = {
-        'title': "Payer Account Info",
-        'form': form.as_p
-        }
-    return render(request, 'content/create-form.html', context)
-
-@login_required(login_url='/login/')
-def create_report_info(request):
-    form = ReportInfoForm()
-    if request.method == 'POST':
-        form = ReportInfoForm(request.POST)
-        if form.is_valid():
-            report = form.save()
-            report.accounts.set(form.cleaned_data["accounts"])
-        return redirect('/create-report-info')
-
-    context = {
-        'title': "Output CUR Info",
-        'form': form.as_p
-        }
-    return render(request, 'content/create-form.html', context)
-
-@login_required(login_url='/login/')
-def create_storage_info(request):
-    form = StorageInfoForm()
-    if request.method == 'POST':
-        form = StorageInfoForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('/create-storage-info')
-
-    context = {
-        'title': "Original CUR Info",
-        'form': form.as_p
-        }
-    return render(request, 'content/create-form.html', context)
 
 
 def cur_hardcoded(request):
