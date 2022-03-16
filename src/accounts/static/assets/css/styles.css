@@ -257,6 +257,11 @@ li {
     font-size: 16px; 
 }
 
+.create .input-wrapper.active {
+
+    border: 1px solid #7800EF;
+}
+
 /* 
 START OF MULTISELECT
 */

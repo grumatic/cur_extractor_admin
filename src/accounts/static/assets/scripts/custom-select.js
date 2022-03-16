@@ -41,8 +41,10 @@ $('.custom-select select').each(function () {
       e.stopPropagation();
       $('div.styledSelect.active').each(function () {
           $(this).removeClass('active').next('ul.options').hide();
-      });
-      $(this).toggleClass('active').next('ul.options').toggle();
+        });
+        $(this).parent().parent().parent().toggleClass('active')
+        $(this).toggleClass('active').next('ul.options').toggle();
+
   });
 
   // Hides the unordered list when a list item is clicked and updates the styled div to show the selected list item
@@ -58,6 +60,7 @@ $('.custom-select select').each(function () {
   // Hides the unordered list when clicking outside of it
   $(document).click(function () {
       $styledSelect.removeClass('active');
+      $(this).parent().parent().parent().toggleClass('active')
       $list.hide();
   });
 
