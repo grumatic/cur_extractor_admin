@@ -529,12 +529,13 @@ button.button-r {
     padding: 13px 24px;
     margin-top: 38px;
     margin-right: 56px;
+    width: auto;
 
     float: right;
 
     background: #FFFFFF;
-    width: auto;
     border: 1px solid #7800EF;
+    color: #7800EF;
     box-sizing: border-box;
     border-radius: 5px;
 }
