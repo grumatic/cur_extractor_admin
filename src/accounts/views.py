@@ -3,6 +3,7 @@ from pprint import pprint
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 
 from django.http import HttpResponse
 from django.template import loader
@@ -21,6 +22,7 @@ from accounts.models import (LinkedAccount,
 
 from cur import tasks
 
+from cur_extractor.Config import Config as configure
 
 def login_view(request):
     if request.method == 'POST':
@@ -42,45 +44,114 @@ def logout_view(request):
 
 
 @login_required(login_url='/login/')
-def linked_account_view(request, linked_account_id: int= None):
-    query = {'linked_account_id': linked_account_id} if linked_account_id else {}
-    linked_accounts = LinkedAccount.view_objects(**query)
+def storage_info_view(request, page: int=None):
+    page = page or 1
+    # query = {'id': storage_info_id} if storage_info_id else {}
+    storage_infos = StorageInfo.objects.filter()
+    paginator = Paginator(storage_infos, configure.PAGE_SIZE)
+    
+    form = StorageInfoForm()
+    if request.method == 'POST':
+        form = StorageInfoForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('/create-storage-info')
+
+    page_range = list(paginator.page_range)
     context = {
-        'linked_accounts': linked_accounts
-        }
-    return HttpResponse(render(request, 'content/view-linked-accounts.html', context))
+        'selected': page,
+        'previous': max(page - 1, 1),
+        'next': min(page + 1, len(page_range)),
+        'pages': page_range,
+        'storage_infos': paginator.get_page(page),
+        'current_url': 'view-cur_updates',
+        'form': form,
+    }
+
+    return HttpResponse(render(request, 'content/view-storage-infos.html', context))
 
 
 @login_required(login_url='/login/')
-def payer_account_view(request, payer_id: int=None):
-    query = {'id': payer_id} if payer_id else {}
-    comps = PayerAccount.view_objects(**query)
+def payer_account_view(request, page: int=None):
+    page = page or 1
+    # query = {'id': payer_id} if payer_id else {}
+    comps = PayerAccount.view_objects()
+    paginator = Paginator(comps, configure.PAGE_SIZE)
+        
+    form = CompanyForm()
+    if request.method == 'POST':
+        form = CompanyForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('/create-storage-info')
 
+    page_range = list(paginator.page_range)
     context = {
-        'payer_accounts': comps
-        }
+        'selected': page,
+        'previous': max(page - 1, 1),
+        'next': min(page + 1, len(page_range)),
+        'pages': page_range,
+        'payer_accounts': paginator.get_page(page),
+        'current_url': 'view-cur_updates',
+        'form': form,
+    }
     return HttpResponse(render(request, 'content/view-payer-accounts.html', context))
 
 
 @login_required(login_url='/login/')
-def report_info_view(request, report_info_id: int=None):
-    query = {'id': report_info_id} if report_info_id else {}
-    report_infos = ReportInfo.view_objects(**query)
+def linked_account_view(request, page: int= None):
+    page = page or 1
+    # query = {'linked_account_id': linked_account_id} if linked_account_id else {}
+    linked_accounts = LinkedAccount.view_objects()
+    paginator = Paginator(linked_accounts, configure.PAGE_SIZE)
 
+    form = AccountForm()
+    if request.method == 'POST':
+        form = AccountForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('/create-storage-info')
+
+    page_range = list(paginator.page_range)
     context = {
-        'report_infos': report_infos
-        }
-    return HttpResponse(render(request, 'content/view-report-infos.html', context))
+        'selected': page,
+        'previous': max(page - 1, 1),
+        'next': min(page + 1, len(page_range)),
+        'pages': page_range,
+        'linked_accounts': paginator.get_page(page),
+        'current_url': 'view-cur_updates',
+        'form': form,
+    }
+    return HttpResponse(render(request, 'content/view-linked-accounts.html', context))
+
 
 @login_required(login_url='/login/')
-def storage_info_view(request, storage_info_id: int=None):
-    query = {'id': storage_info_id} if storage_info_id else {}
-    storage_infos = StorageInfo.objects.filter(**query)
+def report_info_view(request, page: int=None):
+    page = page or 1
 
+    report_infos = ReportInfo.view_objects()
+    paginator = Paginator(report_infos, configure.PAGE_SIZE)
+
+    form = ReportInfoForm()
+    if request.method == 'POST':
+        form = ReportInfoForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('/create-storage-info')
+
+    page_range = list(paginator.page_range)
     context = {
-        'storage_infos': storage_infos
-        }
-    return HttpResponse(render(request, 'content/view-storage-infos.html', context))
+        'selected': page,
+        'previous': max(page - 1, 1),
+        'next': min(page + 1, len(page_range)),
+        'pages': page_range,
+        'report_infos': paginator.get_page(page),
+        'current_url': 'view-cur_updates',
+        'form': form,
+    }
+
+    return HttpResponse(render(request, 'content/view-report-infos.html', context))
+
 
 ################################################################
 ######################### DELETE VIEW ##########################

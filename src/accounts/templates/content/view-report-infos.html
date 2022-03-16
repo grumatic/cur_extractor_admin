@@ -5,82 +5,342 @@
 
 {% block content %}
 <div class="content">
-    <div class="listing-table"></div>
-        <div class="tittle">
-                <h2>Existing Output CUR Info</h2>
+    <div class="view">
+        <div class="title">
+                <h2>Output CUR Information</h2>
         </div>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Bucket Name</th>
-                <th>Payer Account</th>
-                <th>Linked Accounts</th>
-                <th>Credit</th>
-                <th>Refund</th>
-                <th>Tax</th>
-                <th>Discount</th>
-                <th>Blended</th>
-            </tr>
-            
-
-            {% for report_info in report_infos %}
-
-            <tr>
-                <td>{{report_info.id}}</td>
-                <td>{{report_info.name}}</td>
-                <td>{{report_info.bucket_name}}</td>
-                <td>{{report_info.payer.account_id}}</td>
-                <td>
+        <div class="details">
+            <button class="button-r" onclick="changeCreateElementOn()">
+                <div class="download">
+                    Output CUR Info
+                    <img src="{% static '/assets/svg/plus.svg' %}"/>
+                </div>
+            </button> 
+            <div class="table-border">
+                <table>
+                    <tr>
+                        <th>
+                            <div class="column_id">
+                                No.
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_id">
+                                ID
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_name">
+                                Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_bucket">
+                                Bucket Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_payer">
+                                Payer Account
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_linked">
+                                Linked Accounts
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_credit">
+                                Credit
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_refund">
+                                Refund
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_tax">
+                                Tax
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_discount">
+                                Discount
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_blended">
+                                Blended
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_delete">
+                                Delete
+                            </div>
+                        </th>
+                    </tr>
                     
-                
-                    {% for linked_account in report_info.list_acounts %}
-                        <p>{{linked_account.account_id}}</p>
-                    {% endfor %}
 
-                </td>
-                <td>
-                    {% if report_info.credit %}
-                    Included
-                    {% else %}
-                    Not Included
-                    {% endif %}
-                <td>
-                    {% if report_info.refund %}
-                    Included
-                    {% else %}
-                    Not Included
-                    {% endif %}
-                </td>
-                <td>
-                    {% if report_info.tax %}
-                    Included
-                    {% else %}
-                    Not Included
-                    {% endif %}
-                </td>
-                <td>
-                    {% if report_info.discount %}
-                    Included
-                    {% else %}
-                    Not Included
-                    {% endif %}
-                </td>
-                <td>
-                    {% if report_info.blended %}
-                    Included
-                    {% else %}
-                    Not Included
-                    {% endif %}
-                </td>
-                <td>
-                    <a class="btn btn-sm btn-danger" href="/delete-report-info/{{report_info.id}}/">
-                        Delete
+                    {% for report_info in report_infos %}
+
+                    <tr>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{report_info.id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{report_info.id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{report_info.name}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                            {{report_info.bucket_name}}
+                        </div>
+                    </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{report_info.payer.account_id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% for linked_account in report_info.list_acounts %}
+                                        <p>
+                                            {{linked_account.account_id}}
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% if report_info.credit %}
+                                    Included
+                                    {% else %}
+                                    Not Included
+                                    {% endif %}
+                                </div>
+                            </div>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% if report_info.refund %}
+                                    Included
+                                    {% else %}
+                                    Not Included
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% if report_info.tax %}
+                                    Included
+                                    {% else %}
+                                    Not Included
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% if report_info.discount %}
+                                    Included
+                                    {% else %}
+                                    Not Included
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% if report_info.blended %}
+                                    Included
+                                    {% else %}
+                                    Not Included
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    <a class="btn btn-sm btn-danger" href="/delete-report-info/{{report_info.id}}/">
+                                        <img src="{% static '/assets/svg/trash.svg' %}"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="pagination">
+                    <a href="{% url 'view_report-info' page=previous %}">
+                        <img src="{% static '/assets/svg/left-arrow.svg' %}"/>
                     </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+
+                    {% for page in pages %}
+                    <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
+                        <div class="center">
+                            <a href="{% url 'view_report-info' page=previous %}">
+                                {{ page }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <a href="{% url 'view_report-info' page=next %}">
+                        <img src="{% static '/assets/svg/right-arrow.svg' %}"/>
+                    </a>
+            </div>
+        </div>
+    </div>
+    <div class="create off">
+        <div class="create-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-field">
+                    <div class="field-name">
+                        Name:
+                    </div>
+                    <div class="field-input">
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Payer:
+                    </div>
+                    <div class="field-input">
+                        <div class="input-wrapper">
+                            <div class="custom-select">
+                                {{ form.payer }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        ARN:
+                    </div>
+                    <div class="field-input">
+                        {{ form.arn }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Bucket Name:
+                    </div>
+                    <div class="field-input">
+                        {{ form.bucket_name }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Options:
+                    </div>
+                    <div class="field-input-options">
+                        <div class="option-checks">
+                            <div class="option">
+                                <div class="checkbox">
+                                    {{ form.credit }}
+                                </div>
+                                <div class="option-name">
+                                    Credit
+                                </div>
+                            </div>
+                            <div class="option">
+                                <div class="checkbox">
+                                    {{ form.refund }}
+                                </div>
+                                <div class="option-name">
+                                    Refund
+                                </div>
+                            </div>
+                            <div class="option">
+                                <div class="checkbox">
+                                    {{ form.tax }}
+                                </div>
+                                <div class="option-name">
+                                    Tax
+                                </div>
+                            </div>
+                            <div class="option">
+                                <div class="checkbox">
+                                    {{ form.discount }}
+                                </div>
+                                <div class="option-name">
+                                    Discount
+                                </div>
+                            </div>
+                            <div class="option">
+                                <div class="checkbox">
+                                    {{ form.blended }}
+                                </div>
+                                <div class="option-name">
+                                    Blended
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Accounts:
+                    </div>
+                    <div class="field-input">
+                        {{ form.accounts }}
+
+                        <script type="text/javascript">
+                            $(function(){
+                                $('#id_accounts').multiSelect({
+                                    'noneText':'Select Accounts',
+                                });
+                            });
+                        </script>
+                        
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="cancel-btn" enabled
+                     onclick="changeCreateElementOff()">
+                        Cancel
+                    </button>
+                    <div class="submit-btn">
+                        <input class="submit" type="submit" value="Create">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+
+<!-- <script src="{% static '/assets/scripts/list-options.js' %}" type="text/javascript"></script>   -->
+<script src="{% static '/assets/scripts/custom-select.js' %}" type="text/javascript"></script>  
 {% endblock %}

@@ -14,4 +14,4 @@ DEFAULT_PREFIX= 'grumatic-cur'
 NEED_REMOVE_TEMP = True
 
 CHUNK_SIZE = 1e5
-
+PAGE_SIZE = 5

@@ -4,33 +4,164 @@
 
 
 {% block content %}
+
+
 <div class="content">
-    <div class="listing-table"></div>
-        <div class="tittle">
-                <h2>Existing Original CUR Info</h2>
+    <div class="view">
+        <div class="title">
+                <h2>Original CUR Information</h2>
         </div>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Bucket Name</th>
-                <th>Prefix</th>
-            </tr>
-            
+        <div class="details">
+            <button class="button-r" onclick="changeCreateElementOn()">
+                <div class="download">
+                    Original CUR Info
+                    <img src="{% static '/assets/svg/plus.svg' %}"/>
+                </div>
+            </button> 
+            <div class="table-border">
+                <table>
+                    <tr>
+                        <th>
+                            <div class="header_no">
+                                No.
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_no">
+                                ID
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_no">
+                                Bucket Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_no">
+                                Prefix
+                            </div>
+                        </th>
+                        <th>
+                            <div class="column_delete">
+                                Delete
+                            </div>
+                        </th>
+                    </tr>
+                    
 
-            {% for storage_info in storage_infos %}
+                    {% for storage_info in storage_infos %}
 
-            <tr>
-                <td>{{storage_info.id}}</td>
-                <td>{{storage_info.bucket_name}}</td>
-                <td>{{storage_info.prefix}}</td>
-                <td>
-                    <a class="btn btn-sm btn-danger" href="/delete-storage-info/{{storage_info.id}}/">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                    <tr>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{storage_info.id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{storage_info.id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{storage_info.bucket_name}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{storage_info.prefix}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    <a href="/delete-storage-info/{{storage_info.id}}/">
+                                        <img src="{% static '/assets/svg/trash.svg' %}"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="pagination">
+                <a href="{% url 'view_storage-info' page=previous %}">
+                    <img src="{% static '/assets/svg/left-arrow.svg' %}"/>
+                </a>
+
+                {% for page in pages %}
+                <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
+                    <div class="center">
+                        <a href="{% url 'view_storage-info' page=previous %}">
+                            {{ page }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <a href="{% url 'view_storage-info' page=next %}">
+                    <img src="{% static '/assets/svg/right-arrow.svg' %}"/>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="create off">
+        <div class="create-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-field">
+                    <div class="field-name">
+                        Name:
+                    </div>
+                    <div class="field-input">
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Bucket Name:
+                    </div>
+                    <div class="field-input">
+                        {{ form.bucket_name }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Prefix:
+                    </div>
+                    <div class="field-input">
+                        {{ form.prefix }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        ARN:
+                    </div>
+                    <div class="field-input">
+                        {{ form.arn }}
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="cancel-btn" enabled
+                     onclick="changeCreateElementOff()">
+                        Cancel
+                    </button>
+                    <div class="submit-btn">
+                        <input class="submit" type="submit" value="Create">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

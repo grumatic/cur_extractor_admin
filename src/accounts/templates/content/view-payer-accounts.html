@@ -5,43 +5,175 @@
 
 {% block content %}
 <div class="content">
-    <div class="listing-table"></div>
-        <div class="tittle">
+    <div class="view">
+        <div class="title">
                 <h2>Payer Accounts</h2>
         </div>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Linked Accounts</th>
-            </tr>
-            
+        <div class="details">
+            <button class="button-r" onclick="changeCreateElementOn()">
+                <div class="download">
+                    Payer Account Info
+                    <img src="{% static '/assets/svg/plus.svg' %}"/>
+                </div>
+            </button> 
+            <div class="table-border">
+                <table>
+                    <tr>
+                        <th>
+                            <div class="header_no">
+                                No.
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_name">
+                                Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_payer_id">
+                                Payer Account ID
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_linked_ids">
+                                Linked Accounts
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header_delete">
+                                Delete
+                            </div>
+                        </th>
+                    </tr>
+                    
 
-            {% for payer_account in payer_accounts %}
+                    {% for payer_account in payer_accounts %}
 
-            <tr>
-                <td>
-                    {{payer_account.account_id}}
-                </td>
-                <td>
-                    {{payer_account.name}}
-
-                </td>
-                <td>
-                    {% for linked_account in payer_account.accounts %}
-                    <li>
-                        <ul><a href="{% url 'view_account' payer_account.account_id %}">{{linked_account.account_id}}</a></ul>
-                    </li>
+                    <tr>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{payer_account.account_id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{payer_account.account_id}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {{payer_account.name}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    {% for linked_account in payer_account.accounts %}
+                                    <li>
+                                        <ul><a href="{% url 'view_account' payer_account.account_id %}">{{linked_account.account_id}}</a></ul>
+                                    </li>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="cell">
+                                <div class="center">
+                                    <a href="/delete-payer-account/{{payer_account.account_id}}/">
+                                        <img src="{% static '/assets/svg/trash.svg' %}"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     {% endfor %}
-                </td>
-                <td>
-                    <a class="btn btn-sm btn-danger" href="/delete-payer-account/{{payer_account.account_id}}/">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+                </table>
+            </div>
+            <div class="pagination">
+                <a href="{% url 'view_company' page=previous %}">
+                    <img src="{% static '/assets/svg/left-arrow.svg' %}"/>
+                </a>
+
+                {% for page in pages %}
+                <div {% if page == selected %}  class="page_number selected" {% else %} class="page_number" {% endif %}>
+                    <div class="center">
+                        <a href="{% url 'view_company' page=previous %}">
+                            {{ page }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <a href="{% url 'view_company' page=next %}">
+                    <img src="{% static '/assets/svg/right-arrow.svg' %}"/>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="create off">
+        <div class="create-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-field">
+                    <div class="field-name">
+                        Account ID:
+                    </div>
+                    <div class="field-input">
+                        {{ form.account_id }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Name:
+                    </div>
+                    <div class="field-input">
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-name">
+                        Storage Info:
+                    </div>
+                    <div class="field-input">
+                        <div class="input-wrapper">
+                            <div class="custom-select">
+                                {{ form.storage_info }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="cancel-btn" enabled
+                     onclick="changeCreateElementOff()">
+                        Cancel
+                    </button>
+                    <div class="submit-btn">
+                        <input class="submit" type="submit" value="Create">
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+
+<!-- <script src="{% static '/assets/scripts/list-options.js' %}" type="text/javascript"></script>   -->
+<script src="{% static '/assets/scripts/custom-select.js' %}" type="text/javascript"></script>  
+
+
+
+
+
+
+
+
+
+
 {% endblock %}

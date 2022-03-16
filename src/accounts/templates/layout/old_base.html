@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <meta name="description" content="Dashboard to handle CUR reports accounts" />
+    <meta name="author" content="Jose Simoes | Grumatic" />
+    
+    <title>
+        CUR Extractor tool | Grumatic
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+        rel="stylesheet" />
+    <!-- Latest compiled and minified JavaScript -->
+    <link href="{% static '/assets/css/styles.css' %}"
+        rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Fontawesome -->
+    <link href="{% static 'assets/css/icons/font-awesome/css/fontawesome.min.css' %}"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <!-- Latest compiled and minified CSS -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" 
+        rel="stylesheet"> -->
+    <!-- Optional theme -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
+        rel="stylesheet"> -->
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
+
+
+
+    <!-- Specific Page CSS goes HERE  -->
+    {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body>
+    <div class="side-menu">
+        <div class="name">
+            <h1>CUR Extractor</h1>
+        </div>
+        <ul>
+            <li>
+                <div>
+                    <a class="left" href="{% url 'view_storage-info' %}">Original CUR Info</a>
+                    <a class="right" href="{% url 'create_storage-info' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="left" href="{% url 'view_company' %}">Payer Accounts</a>
+                    <a class="right" href="{% url 'create_company' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="left" href="{% url 'view_account' %}">Linked Accounts</a>
+                    <a class="right" href="{% url 'create_account' %}">
+                        <i class="fas fa-plus"></i>
+                    </a>
+
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="left" href="{% url 'view_report-info' %}">Output CUR Info</a>
+                    <a class="right" href="{% url 'create_report-info' %}">
+                        <i class="fas fa-plus">
+                    </i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a class="left" href="{% url 'view-cur_updates' %}">CUR Updates</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}{% endblock javascripts %}
+        
+</body>
+</html>
+
+
+
+
+
+
+<div class="side-menu">
+    <div class="name">
+        <h1>CUR Extractor</h1>
+    </div>
+    <ul>
+        <li>
+            <div>
+                {% url 'view_storage-info' as input_url %}
+                <a href="{{ input_url }}"
+                {% if request.path == input_url %}  class="left active" {% else %} class="left" {% endif %}
+                >
+                    Original CUR Info
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                {% url 'view_company' as company_url %}
+                <a href="{{ company_url }}"
+                {% if request.path == company_url %}  class="left active" {% else %} class="left" {% endif %}
+                >
+                    Payer Accounts
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                {% url 'view_account' as account_url %}
+                <a href="{{ account_url }}"
+                {% if request.path == account_url %}  class="left active" {% else %} class="left" {% endif %}
+                >
+                    Linked Accounts
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                {% url 'view_report-info' as output_url %}
+                <a href="{{ output_url }}"
+                {% if request.path == output_url %}  class="left active" {% else %} class="left" {% endif %}
+                >
+                    Output CUR Info
+                </a>
+            </div>
+        </li>
+        <li>
+            <div>
+                {% url 'view-cur_updates' as cur_update_url %}
+                <a href="{{ cur_update_url }}"
+                {% if request.path == cur_update_url %}  class="left active" {% else %} class="left" {% endif %}
+                >
+                    CUR Updates
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

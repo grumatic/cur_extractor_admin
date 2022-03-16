@@ -28,75 +28,76 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
 
-    <!-- Bootstrap -->
-    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" 
-        rel="stylesheet"> -->
-    <!-- Optional theme -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
-        rel="stylesheet"> -->
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
-
-
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Specific Page CSS goes HERE  -->
     {% block stylesheets %}{% endblock stylesheets %}
 
+
+    <script src="{% static '/assets/scripts/form-switch.js' %}" type="text/javascript"></script>
+    <script src="{% static '/assets/scripts/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static '/assets/scripts/jquery.multi-select.min.js' %}"></script>
+
 </head>
+
 <body>
-    <div class="side-menu">
+    <div id="sidenav">
         <div class="name">
-            <h1>CUR Extractor</h1>
+            <h1>CUR EXTRACTOR</h1>
         </div>
-        <ul>
-            <li>
-                <div>
-                    <a class="left" href="{% url 'view_storage-info' %}">Original CUR Info</a>
-                    <a class="right" href="{% url 'create_storage-info' %}">
-                        <i class="fas fa-plus"></i>
+        <div id="navitems">
+            <ul>
+                <li>
+                    {% url 'view_storage-info' as input_url %}
+                    <a href="{{ input_url }}">
+                    <div {% if request.path == input_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                            Original CUR Information
+                        </div>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a class="left" href="{% url 'view_company' %}">Payer Accounts</a>
-                    <a class="right" href="{% url 'create_company' %}">
-                        <i class="fas fa-plus"></i>
+                </li>
+                <li>
+                    {% url 'view_company' as company_url %}
+                    <a href="{{ company_url }}">
+                    <div {% if request.path == company_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                            Payer Accounts
+                        </div>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a class="left" href="{% url 'view_account' %}">Linked Accounts</a>
-                    <a class="right" href="{% url 'create_account' %}">
-                        <i class="fas fa-plus"></i>
+                </li>
+                <li>
+                    {% url 'view_account' as account_url %}
+                    <a href="{{ account_url }}">
+                    <div {% if request.path == account_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                            Linked Accounts
+                        </div>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a class="left" href="{% url 'view_report-info' %}">Output CUR Info</a>
-                    <a class="right" href="{% url 'create_report-info' %}">
-                        <i class="fas fa-plus">
-                    </i>
+                </li>
+                <li>
+                    {% url 'view_report-info' as output_url %}
+                    <a href="{{ output_url }}">
+                    <div {% if request.path == output_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                            Output CUR Information
+                        </div>
                     </a>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <a class="left" href="{% url 'view-cur_updates' %}">CUR Updates</a>
-                </div>
-            </li>
-        </ul>
+                </li>
+                <li>
+                    {% url 'view-cur_updates' as cur_update_url %}
+                    <a href="{{ cur_update_url }}">
+                    <div {% if request.path == cur_update_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                            CUR Updates
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="container">
+    <div id="container">
         {% block content %}
         {% endblock %}
     </div>
     <!-- Specific Page JS goes HERE  -->
-    {% block javascripts %}{% endblock javascripts %}
-        
+    {% block javascripts %}
+    {% endblock javascripts %}
+
 </body>
 </html>

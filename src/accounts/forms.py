@@ -18,7 +18,7 @@ class ReportInfoForm(forms.ModelForm):
     accounts = forms.ModelMultipleChoiceField(
         queryset=LinkedAccount.objects.all(),
         required=False,
-        widget = forms.CheckboxSelectMultiple,
+        # widget = forms.CheckboxSelectMultiple,
     )
     class Meta:
         model = ReportInfo
