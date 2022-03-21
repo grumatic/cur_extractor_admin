@@ -53,6 +53,7 @@ $('.custom-select select').each(function () {
   $listItems.click(function (e) {
       e.stopPropagation();
       $styledSelect.text($(this).text()).removeClass('active');
+      $styledSelect.parent().parent().parent().removeClass('active')
       $this.val($(this).attr('rel'));
       $list.hide();
       /* alert($this.val()); Uncomment this for demonstration! */
@@ -61,7 +62,7 @@ $('.custom-select select').each(function () {
   // Hides the unordered list when clicking outside of it
   $(document).click(function () {
       $styledSelect.removeClass('active');
-      $styledSelect.parent().parent().parent().toggleClass('active')
+      $styledSelect.parent().parent().parent().removeClass('active')
       $list.hide();
   });
 
