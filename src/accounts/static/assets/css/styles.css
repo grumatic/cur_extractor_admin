@@ -25,6 +25,7 @@ li {
     list-style-type: none;
 }
 
+
 #sidenav {
     left:0;
     top:0;
@@ -109,6 +110,8 @@ li {
 #container{
     background-color: #FCFCFC;
     width: 100%;
+    position: relative;
+    /* height: 100vh; */
 }
 #container .content .title {
     margin-top: 64px;
@@ -129,6 +132,29 @@ li {
     box-sizing: border-box;
 }
 
+
+
+footer {
+    width:100%;
+    font-weight: 400;
+    font-size: 12px;
+    color: #737480;
+    background-color: #FFFFFF;
+
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+footer .copyright {
+    margin-left: 32px;
+}
+footer .contact {
+    margin-left: auto;
+    margin-right: 32px;
+}
 
 
 .login-content {
