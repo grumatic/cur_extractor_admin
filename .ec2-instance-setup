@@ -1,0 +1,19 @@
+sudo yum update -y
+sudo yum install git -y
+sudo yum install docker -y
+
+wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) 
+sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose
+sudo chmod -v +x /usr/local/bin/docker-compose
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
+mkdir cur-extractor
+wget -c https://github.com/grumatic/cur_extractor_admin/archive/refs/tags/<VERSION_TAG>.tar.gz -O - | tar -xz -C ./cur-extractor --strip 1
+cd cur-extractor
+
+cp .env-SAMPLE .env
+
+docker-compose -f docker-compose-prod.yaml up --build
