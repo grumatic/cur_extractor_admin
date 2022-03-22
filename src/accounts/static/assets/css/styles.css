@@ -93,6 +93,19 @@ li {
     color: #17171A;
 }
 
+#sidenav #logout {
+    position: absolute;
+    bottom: 35px;
+    left: 30px;
+}
+#sidenav #logout .navitem {
+    display: flex;
+    align-items: center;
+}
+#sidenav #logout .navitem img {
+    margin-right: 13px;
+}
+
 #container{
     background-color: #FCFCFC;
     width: 100%;
@@ -115,6 +128,115 @@ li {
     border: 1px solid #F0F0F7;
     box-sizing: border-box;
 }
+
+
+
+.login-content {
+    height: 100vh;
+    width: 60vw;
+
+    min-width: 500px;
+    
+    position: absolute;
+    display: flex;
+    left: 0;
+    top: 0;
+    
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-content .logo {
+    width: 135px;
+
+    position: absolute;
+    left: 32px;
+    top: 32px;
+}
+
+.login-content .login-wrapper {
+    display: block;
+}
+.login-content .login-wrapper input {
+    width: 384px;
+    height: 48px;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+
+    padding-left: 16px;
+}
+
+.login-content .login-wrapper input.login-button {
+    width: 400px;
+    height: 48px;
+    margin: 72px 0 0 0;
+    padding-left: 16px;
+    
+    color: #FFFFFF;
+    background: #7800EF;
+    border-radius: 3px;
+    border: none;
+}
+
+.login-content .login-wrapper h1 {
+    font-size: 32px;
+    font-weight: 700;
+
+    margin-bottom: 70px;
+}
+
+/* .login-content #login-form {
+    position: relative;
+    margin-left: auto;
+} */
+
+.cco-banner {
+    background-color: #101043;
+    background-image: url("/static/static/assets/svg/login-asset.svg");
+    background-size: cover;
+    color: #FFFFFF;
+
+    width: 40vw;
+    min-width: 300px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cco-banner .content-wrapper{
+    display: block;
+    width: auto;
+    height: auto;
+    
+    text-align: left;
+}
+
+.cco-banner h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+.cco-banner p {
+    margin: 5px 0 5px 0;
+}
+.cco-banner .bullet-point {
+    display: flex;
+    align-items: center;
+
+    font-weight: 400;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+.cco-banner .bullet-point img {
+    margin-right: 19px;
+}
+
 
 .content {
     display: flex;
@@ -216,7 +338,13 @@ li {
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
+}
+
+.create .create-form .field-input p {
+    margin-top: 3px;
+    color: #A0A1B2;
     
+    font-size: 12px;
 }
 
 .create .create-form .field-input-options {
@@ -241,6 +369,9 @@ li {
 .create .field-input-options .option-checks .option input {
     width: 14px;
     height: 14px;
+}
+.create .field-input-options .option-checks .option input[type="checkbox"] {
+    background-color: #101043;
 }
 .create .field-input-options .option-checks .option .option-name {
     margin-left: 16px;

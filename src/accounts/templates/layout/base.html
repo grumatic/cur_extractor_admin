@@ -51,7 +51,7 @@
                 <li>
                     {% url 'view_storage-info' as input_url %}
                     <a href="{{ input_url }}">
-                    <div {% if request.path == input_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                        <div {% if request.path == input_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
                             Original CUR Information
                         </div>
                     </a>
@@ -59,7 +59,7 @@
                 <li>
                     {% url 'view_company' as company_url %}
                     <a href="{{ company_url }}">
-                    <div {% if request.path == company_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                        <div {% if request.path == company_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
                             Payer Accounts
                         </div>
                     </a>
@@ -67,7 +67,7 @@
                 <li>
                     {% url 'view_account' as account_url %}
                     <a href="{{ account_url }}">
-                    <div {% if request.path == account_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                        <div {% if request.path == account_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
                             Linked Accounts
                         </div>
                     </a>
@@ -75,7 +75,7 @@
                 <li>
                     {% url 'view_report-info' as output_url %}
                     <a href="{{ output_url }}">
-                    <div {% if request.path == output_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                        <div {% if request.path == output_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
                             Output CUR Information
                         </div>
                     </a>
@@ -83,13 +83,22 @@
                 <li>
                     {% url 'view-cur_updates' as cur_update_url %}
                     <a href="{{ cur_update_url }}">
-                    <div {% if request.path == cur_update_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
-                            CUR Updates
+                        <div {% if request.path == cur_update_url %}  class="navitem active" {% else %} class="navitem" {% endif %}>
+                            Original CUR Information
                         </div>
                     </a>
                 </li>
             </ul>
         </div>
+        <div id="logout">
+            {% url 'logout' as logout_url %}
+            <a href="{{ logout_url }}">
+                <div class="navitem" >
+                    <img src="{% static '/assets/svg/left-arrow.svg' %}"/> Sign out
+                </div>
+            </a>
+        </div>
+
     </div>
     <div id="container">
         {% block content %}

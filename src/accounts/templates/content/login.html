@@ -1,33 +1,89 @@
-{% extends 'layout/base.html' %}
-{% block title %}Login{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
 
-{% block content %}
-<div class="content">
-    <form id="login-form" method="post" 
-            action="{% url 'login' %}">
-        {% csrf_token %}
-        <table class="table">
-            <tr>
-                <td><label for="id_username">Username</label></td>
-                <td><input id="id_username" name="username" 
-                            type="text" class="form-control"></td>
-            </tr>
-            <tr>
-                <td><label for="id_password">Password</label></td>
-                <td><input id="id_password" name="password" 
-                            type="password" class="form-control"></td>
-            </tr>
-        </table>
-        {% if form.errors %}
-            <p class=" label label-danger">
-                Your username and password didn't match. 
-                Please try again.
-            </p>
-        {% endif %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <input type="submit" value="Login" 
-                class="btn btn-primary pull-right" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-</div>
-{% endblock content %}
+    <meta name="description" content="Dashboard to handle CUR reports accounts" />
+    <meta name="author" content="Jose Simoes | Grumatic" />
+    
+    <title>
+        CUR Extractor tool | Grumatic
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+        rel="stylesheet" />
+    <!-- Latest compiled and minified JavaScript -->
+    <link href="{% static '/assets/css/styles.css' %}"
+        rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Fontawesome -->
+    <link href="{% static 'assets/css/icons/font-awesome/css/fontawesome.min.css' %}"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Specific Page CSS goes HERE  -->
+    {% block stylesheets %}{% endblock stylesheets %}
+
+
+    <script src="{% static '/assets/scripts/form-switch.js' %}" type="text/javascript"></script>
+    <script src="{% static '/assets/scripts/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static '/assets/scripts/jquery.multi-select.min.js' %}"></script>
+
+</head>
+
+<body>
+        <div class="login-content">
+            <img class="logo" src="{% static '/assets/svg/logo-asset.svg' %}"/>
+            <div class="login-wrapper">
+                <h1>Sign in</h1>
+                <form id="login-form" method="post" 
+                    action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="field-input">
+                        <input id="id_username" name="username" 
+                        type="text" class="form-control" placeholder="User name">
+                    </div>
+                    <div class="field-input">
+                        <input id="id_password" name="password" 
+                        type="password" class="form-control" placeholder="Password">
+                    </div>
+                    {% if form.errors %}
+                    <p class=" label label-danger">
+                        Your username and password didn't match. 
+                        Please try again.
+                    </p>
+                    {% endif %}
+                    
+                    <input type="submit" value="Login" 
+                    class="login-button"/>
+                    <!-- <input type="hidden" name="next" value="{{ next }}" /> -->
+                </form>
+            </div>
+        </div>
+        <div class="cco-banner">
+            <div class="content-wrapper">
+
+                <h1>Welcome to CUR Extractor CostClipper</h1>
+                
+                <div>
+                    <p>Optimize your cloud spending and</p>
+                    <p>maximize the profit at your business</p>
+                </div>
+                
+                <div class="bullet-point"><img src="{% static '/assets/svg/check.svg' %}"/> Intelligence</div>
+                <div class="bullet-point"><img src="{% static '/assets/svg/check.svg' %}"/> Cost Optimization</div>
+                <div class="bullet-point"><img src="{% static '/assets/svg/check.svg' %}"/> Anomaly Detection</div>
+                <div class="bullet-point"><img src="{% static '/assets/svg/check.svg' %}"/> Smart Planning</div>
+            </div>
+        </div>
+</body>
