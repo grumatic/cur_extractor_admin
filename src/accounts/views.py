@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 
@@ -38,6 +38,9 @@ def get_transformed_range(paginator):
         result = page_range
     return result
 
+
+def health_check(request):
+    return JsonResponse({"health":"OK"})
 
 def login_view(request):
     if request.method == 'POST':
