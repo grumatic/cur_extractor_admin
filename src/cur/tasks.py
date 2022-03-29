@@ -109,7 +109,8 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
         s3_uploader = S3HandlerClass(
                             arn=report_info.arn,
                             storage_id= report_info.id,
-                            bucket_name= report_info.bucket_name
+                            bucket_name= report_info.bucket_name,
+                            external_id=report_info.external_id,
                         )
 
         logger.info(f"Uploading {new_key}")
@@ -141,7 +142,8 @@ def run():
         s3_downloader = S3HandlerClass(
             arn=storage_info.arn,
             storage_id= storage_info.id,
-            bucket_name= storage_info.bucket_name
+            bucket_name= storage_info.bucket_name,
+            external_id=storage_info.external_id,
         )
 
         logger.info(f"Checking report changes in Original CUR Info '{storage_info.name}'")

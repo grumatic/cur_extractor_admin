@@ -13,6 +13,7 @@ class StorageInfo(models.Model):
     bucket_name = models.CharField(max_length=63)
     prefix = models.CharField(max_length=1000, blank=True)
     arn = models.CharField(max_length=1024)
+    external_id = models.CharField(max_length=256, blank=True)
 
     class Meta:
         db_table = "storage_info"
@@ -106,6 +107,7 @@ class ReportInfo(models.Model):
                             LinkedAccount,
                             blank=True)
     arn = models.CharField(max_length=1024)
+    external_id = models.CharField(max_length=256, blank=True)
     bucket_name = models.CharField(max_length=63)
 
     credit = models.BooleanField(default=True)

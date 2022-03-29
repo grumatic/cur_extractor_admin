@@ -22,11 +22,13 @@ class S3HandlerClass(object):
     def __init__(self,
             storage_id,
             arn,
-            bucket_name
+            bucket_name,
+            external_id
     ):
         self.storage_id = storage_id
         self.arn = arn
         self.bucket_name = bucket_name
+        self.external_id = external_id
         self.set_session()
     
     def set_session(self):
@@ -68,7 +70,7 @@ class S3HandlerClass(object):
             role = sts_client.assume_role(
                 RoleArn=self.arn,
                 RoleSessionName=session_key,
-                ExternalId=os.getenv('EXTERNAL_ID')
+                ExternalId= self.external_id or os.getenv('EXTERNAL_ID')
             )
 
             return role['Credentials']

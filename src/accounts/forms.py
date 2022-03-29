@@ -26,6 +26,7 @@ class ReportInfoForm(forms.ModelForm):
             'name',
             'payer',
             'arn',
+            'external_id',
             'bucket_name',
             'credit',
             'refund',
