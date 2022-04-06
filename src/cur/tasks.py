@@ -103,6 +103,9 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
         if upload_path[upload_path.rfind('.'):] != ".gz":
             upload_path = f"{upload_path[:upload_path.rfind('.')]}.gz"
 
+        if new_key[new_key.rfind('.'):] != ".gz":
+            new_key = f"{new_key[:new_key.rfind('.')]}.gz"
+
 
         logger.info(f"Extracting data for Output CUR Info '{report_info.name}' [Target-{new_key}]")
         is_extracted = extract_data(downloaded_path, upload_path, report_info, account_ids)
