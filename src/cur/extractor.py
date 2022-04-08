@@ -106,10 +106,10 @@ def make_tmp_folder_to_extract_result(temp_path):
     if not os.path.isdir(target_path):
         try:
             os.makedirs(target_path)
-        except OSError:
+        except OSError as e:
             logger.error(f"Creation of the directory {target_path} failed")
-            raise Exception("Creation of the directory {} failed" % target_path)
-    logger.info("Successfully created the directory %s" % target_path)
+            raise Exception(f"Creation of the directory {target_path} failed")
+    logger.info(f"Successfully created the directory {target_path}")
     return target_path
 
 def make_folder_for_company_result(path, target):
@@ -120,10 +120,9 @@ def make_folder_for_company_result(path, target):
     if not os.path.isdir(target_path):
         try:
             os.makedirs(target_path)
-        except Exception:
+        except Exception as e:
             logger.error(f"Creation of the directory {target_path} failed")
-            raise Exception("Creation of the directory {} failed" % target_path)
-    # logger.info("Successfully created the directory %s" % target_path)
+            raise Exception(f"Creation of the directory {target_path} failed")
     return target_path
 
 def create_folder(target_path):
@@ -153,7 +152,7 @@ def extract_data_to_csv(source_path, account_id):
     dst_path = source_path.replace(source_folder_path, dst_folder_path)
     fw = open(dst_path, 'w', newline='')
     writer = csv.writer(fw)
-    
+
     # Extract
     index = 0
     headers = []
@@ -162,9 +161,7 @@ def extract_data_to_csv(source_path, account_id):
         if index == 0:
             headers = row
         else:
-            obj = {}
-            for i, val in enumerate(row):
-                obj[headers[i]] = val
+            obj = {headers[i]: val for i, val in enumerate(row)}
             # Write header
             if index == 1:
                 writer.writerow(obj)
@@ -178,7 +175,7 @@ def extract_data_to_csv(source_path, account_id):
         fd.close()
     if not fw.closed:
         fw.close()
-    
+
     # If not any row matched, raise ValueError to skip result
     if not has_content:
         raise ValueError

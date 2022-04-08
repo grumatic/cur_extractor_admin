@@ -2,6 +2,7 @@ import json
 import logging.config
 import os
 from pprint import pprint
+import re
 import sys
 import traceback
 
@@ -82,6 +83,28 @@ def get_report_infos(storage_info):
     payers = PayerAccount.get_by_storage_info(storage_info)
     return ReportInfo.objects.filter(payer__in=list(payers))
 
+def paths_helper(s3_downloader, downloaded_path, report_info_id, manifest_key):
+    """
+    Helper function to get the different paths and key
+    """
+    output_folder = f"{downloaded_path[:downloaded_path.rfind('/')+1]}{report_info_id}/"
+    output_folder = s3_downloader.make_temp_dir(output_folder)
+    path_key = f"{configure.DEFAULT_PREFIX}&&{downloaded_path.split('&&')[-2]}&&{downloaded_path.split('&&')[-1]}"
+    new_key = f"{manifest_key[:manifest_key.rfind('/')]}"
+    new_key = f"{new_key}/{downloaded_path.split('&&')[-1]}"
+
+    upload_path = f"{output_folder}{path_key}"
+    
+    if upload_path[upload_path.rfind('.'):] != ".gz":
+        upload_path = f"{upload_path[:upload_path.rfind('.')]}.gz"
+    if new_key[new_key.rfind('.'):] != ".gz":
+        new_key = f"{new_key[:new_key.rfind('.')]}.gz"
+
+    regex = r'\d{8}-\d{8}\/'
+    pre_date, post_date = re.split(regex, new_key)
+    new_key = f"{new_key[:len(pre_date)+18]}{post_date[post_date.find('/')+1:]}"
+
+    return output_folder, upload_path, new_key
 
 def update_report(downloaded_path, report_infos, s3_downloader, report, storage_info):
     """
@@ -92,32 +115,23 @@ def update_report(downloaded_path, report_infos, s3_downloader, report, storage_
         accounts = LinkedAccount.get_by_report_info(report_info)
         account_ids = [account.account_id for account in accounts]
 
-        output_folder = f"{downloaded_path[:downloaded_path.rfind('/')+1]}{report_info.id}/"
-        output_folder = s3_downloader.make_temp_dir(output_folder)
-        path_key = f"{configure.DEFAULT_PREFIX}&&{downloaded_path.split('&&')[-2]}&&{downloaded_path.split('&&')[-1]}"
-        new_key = f"{report['manifest_key'][:report['manifest_key'].rfind('/')]}"
-        new_key = f"{new_key}/{downloaded_path.split('&&')[-1]}"
+        output_folder, upload_path, new_key = paths_helper(
+            s3_downloader=s3_downloader,
+            downloaded_path=downloaded_path,
+            report_info_id=report_info.id,
+            manifest_key=report['manifest_key']
+        )
 
-        upload_path = f"{output_folder}{path_key}"
-        
-        if upload_path[upload_path.rfind('.'):] != ".gz":
-            upload_path = f"{upload_path[:upload_path.rfind('.')]}.gz"
-
-        if new_key[new_key.rfind('.'):] != ".gz":
-            new_key = f"{new_key[:new_key.rfind('.')]}.gz"
-
-
-        logger.info(f"Extracting data for Output CUR Info '{report_info.name}' [Target-{new_key}]")
+        logger.info(f"Extracting data for Output CUR Info '{report_info.name}' [Target- {new_key}]")
         is_extracted = extract_data(downloaded_path, upload_path, report_info, account_ids)
-
         if not is_extracted:
             continue
         s3_uploader = S3HandlerClass(
-                            arn=report_info.arn,
-                            storage_id= report_info.id,
-                            bucket_name= report_info.bucket_name,
-                            external_id=report_info.external_id,
-                        )
+            arn=report_info.arn,
+            storage_id= report_info.id,
+            bucket_name= report_info.bucket_name,
+            external_id=report_info.external_id,
+        )
 
         logger.info(f"Uploading {new_key}")
         s3_uploader.upload_CUR_data(file_path=upload_path, key=new_key)
